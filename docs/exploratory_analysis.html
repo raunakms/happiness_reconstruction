@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Exploratory Analysis</title>
+
+<script src="site_libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="data_preprocess.html">Data Pre-process</a>
+</li>
+<li>
+  <a href="choropleth_maps.html">Choropleth Maps</a>
+</li>
+<li>
+  <a href="exploratory_analysis.html">Exploratory Analysis</a>
+</li>
+<li>
+  <a href="regression_analysis.html">Regression Analysis</a>
+</li>
+<li>
+  <a href="inequality_analysis.html">Inequality Analysis</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Exploratory Analysis</h1>
+
+</div>
+
+
+<div id="define-libraries" class="section level4">
+<h4>Define Libraries</h4>
+<pre class="r"><code>library(&quot;stringr&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;gridExtra&quot;)
+library(&quot;knitr&quot;)</code></pre>
+</div>
+<div id="define-path" class="section level4">
+<h4>Define Path</h4>
+<pre class="r"><code>dir.wrk &lt;- str_replace(getwd(), &quot;/scripts2&quot;, &quot;&quot;)
+dir.data &lt;- file.path(dir.wrk, &quot;dataset/data&quot;)
+dir.annot &lt;- file.path(dir.wrk, &quot;dataset/annotation&quot;)
+dir.script &lt;- file.path(dir.wrk, &quot;scripts2&quot;)
+dir.output &lt;- file.path(dir.wrk, &quot;output&quot;)
+dir.plot &lt;- file.path(dir.wrk, &quot;plots&quot;)</code></pre>
+</div>
+<div id="define-files" class="section level4">
+<h4>Define Files</h4>
+<pre class="r"><code>file.dat &lt;- file.path(dir.data, &quot;mastertbl_household_reconstruction.tsv&quot;)</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<pre class="r"><code>dat &lt;- read.delim(file.dat, header = TRUE, stringsAsFactors = FALSE)
+
+# FACTORIZE ---
+dat$DISTRICT &lt;- factor(dat$DISTRICT, levels = c(&quot;Dhading&quot;, &quot;Sindhupalchowk&quot;))
+dat$VDC_MUN &lt;- factor(dat$VDC_MUN, levels = c(&quot;Gumdi&quot;, &quot;Sertung&quot;, &quot;Batase&quot;, &quot;Pangtang&quot;))
+dat$WARD &lt;- as.factor(dat$WARD)
+dat$SEX &lt;- factor(dat$SEX, levels = c(&quot;Male&quot;, &quot;Female&quot;))
+dat$ETHNICITY &lt;- factor(dat$ETHNICITY, levels = c(&quot;Bahun&quot;, &quot;Chhetri&quot;, &quot;Dalit-Others&quot;, 
+    &quot;Gurung-Magar&quot;, &quot;Newar&quot;, &quot;Tamang&quot;))
+dat$EDUCATION_LEVEL &lt;- factor(dat$EDUCATION_LEVEL, levels = c(&quot;Illiterate&quot;, &quot;Primary&quot;, 
+    &quot;Secondary&quot;, &quot;University&quot;))
+dat$OCCUPATION &lt;- factor(dat$OCCUPATION, levels = c(&quot;Agriculture&quot;, &quot;Business&quot;, &quot;Goverment Employee&quot;, 
+    &quot;Labour&quot;, &quot;Teacher&quot;))
+dat$INCOME_LEVEL &lt;- factor(dat$INCOME_LEVEL, levels = c(&quot;0-2.5K&quot;, &quot;2.5-10K&quot;, &quot;10-20K&quot;, 
+    &quot;20-40K&quot;, &quot;40-60K&quot;, &quot;60K-Above&quot;))
+dat$RECON_COMPLETED &lt;- as.factor(dat$RECON_COMPLETED)
+dat$FREEDOM_CHOICE &lt;- as.factor(dat$FREEDOM_CHOICE)
+
+# str(dat)</code></pre>
+<p></br></br></p>
+</div>
+<div id="generate-basic-statistics" class="section level3">
+<h3>Generate Basic Statistics</h3>
+<p></br></p>
+<div id="distribution-by-location" class="section level4">
+<h4>Distribution by Location</h4>
+<pre class="r"><code>df11 &lt;- dat %&gt;% 
+          dplyr::count(DISTRICT, sort=FALSE, name=&quot;Number_of_Households&quot;)
+
+df12 &lt;- dat %&gt;% 
+          dplyr::select(DISTRICT, SATISFACTION_LEVEL) %&gt;%
+          group_by(DISTRICT) %&gt;%
+          summarize(Satisfaction_Mean=round(mean(SATISFACTION_LEVEL),3), 
+                    Satisfaction_Median=round(median(SATISFACTION_LEVEL),3), 
+                    Satisfaction_SD=round(sd(SATISFACTION_LEVEL),3))
+
+df1 &lt;- merge(df11, df12, by=&quot;DISTRICT&quot;)
+
+knitr::kable(df1)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">DISTRICT</th>
+<th align="right">Number_of_Households</th>
+<th align="right">Satisfaction_Mean</th>
+<th align="right">Satisfaction_Median</th>
+<th align="right">Satisfaction_SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Dhading</td>
+<td align="right">197</td>
+<td align="right">6.569</td>
+<td align="right">6</td>
+<td align="right">2.129</td>
+</tr>
+<tr class="even">
+<td align="left">Sindhupalchowk</td>
+<td align="right">184</td>
+<td align="right">6.973</td>
+<td align="right">7</td>
+<td align="right">1.951</td>
+</tr>
+</tbody>
+</table>
+<p></br></p>
+</div>
+<div id="distribution-by-sex" class="section level4">
+<h4>Distribution by Sex</h4>
+<pre class="r"><code>df21 &lt;- dat %&gt;% 
+          dplyr::count(SEX, sort=FALSE, name=&quot;Number_of_Households&quot;)
+
+df22 &lt;- dat %&gt;% 
+          dplyr::select(SEX, SATISFACTION_LEVEL) %&gt;%
+          group_by(SEX) %&gt;%
+          summarize(Satisfaction_Mean=round(mean(SATISFACTION_LEVEL),3), 
+                    Satisfaction_Median=round(median(SATISFACTION_LEVEL),3), 
+                    Satisfaction_SD=round(sd(SATISFACTION_LEVEL),3))
+
+df2 &lt;- merge(df21, df22, by=&quot;SEX&quot;)
+
+knitr::kable(df2)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">SEX</th>
+<th align="right">Number_of_Households</th>
+<th align="right">Satisfaction_Mean</th>
+<th align="right">Satisfaction_Median</th>
+<th align="right">Satisfaction_SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Female</td>
+<td align="right">162</td>
+<td align="right">6.667</td>
+<td align="right">6</td>
+<td align="right">2.003</td>
+</tr>
+<tr class="even">
+<td align="left">Male</td>
+<td align="right">219</td>
+<td align="right">6.836</td>
+<td align="right">7</td>
+<td align="right">2.090</td>
+</tr>
+</tbody>
+</table>
+<p></br></p>
+</div>
+<div id="distribution-by-ethnicity" class="section level4">
+<h4>Distribution by Ethnicity</h4>
+<pre class="r"><code>df31 &lt;- dat %&gt;% 
+          dplyr::count(ETHNICITY, sort=FALSE, name=&quot;Number_of_Households&quot;)
+
+df32 &lt;- dat %&gt;% 
+          dplyr::select(ETHNICITY, SATISFACTION_LEVEL) %&gt;%
+          group_by(ETHNICITY) %&gt;%
+          summarize(Satisfaction_Mean=round(mean(SATISFACTION_LEVEL),3), 
+                    Satisfaction_Median=round(median(SATISFACTION_LEVEL),3), 
+                    Satisfaction_SD=round(sd(SATISFACTION_LEVEL),3))
+
+df3 &lt;- merge(df31, df32, by=&quot;ETHNICITY&quot;)
+
+knitr::kable(df3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ETHNICITY</th>
+<th align="right">Number_of_Households</th>
+<th align="right">Satisfaction_Mean</th>
+<th align="right">Satisfaction_Median</th>
+<th align="right">Satisfaction_SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Bahun</td>
+<td align="right">40</td>
+<td align="right">7.725</td>
+<td align="right">8</td>
+<td align="right">1.783</td>
+</tr>
+<tr class="even">
+<td align="left">Chhetri</td>
+<td align="right">52</td>
+<td align="right">7.250</td>
+<td align="right">7</td>
+<td align="right">1.969</td>
+</tr>
+<tr class="odd">
+<td align="left">Dalit-Others</td>
+<td align="right">47</td>
+<td align="right">6.830</td>
+<td align="right">6</td>
+<td align="right">2.099</td>
+</tr>
+<tr class="even">
+<td align="left">Gurung-Magar</td>
+<td align="right">81</td>
+<td align="right">6.741</td>
+<td align="right">7</td>
+<td align="right">2.011</td>
+</tr>
+<tr class="odd">
+<td align="left">Newar</td>
+<td align="right">36</td>
+<td align="right">7.167</td>
+<td align="right">7</td>
+<td align="right">1.828</td>
+</tr>
+<tr class="even">
+<td align="left">Tamang</td>
+<td align="right">125</td>
+<td align="right">6.128</td>
+<td align="right">6</td>
+<td align="right">2.067</td>
+</tr>
+</tbody>
+</table>
+<p></br></p>
+</div>
+<div id="distribution-by-income-level" class="section level4">
+<h4>Distribution by Income Level</h4>
+<pre class="r"><code>df41 &lt;- dat %&gt;% 
+          dplyr::count(INCOME_LEVEL, sort=FALSE, name=&quot;Number_of_Households&quot;)
+
+df42 &lt;- dat %&gt;% 
+          dplyr::select(INCOME_LEVEL, SATISFACTION_LEVEL) %&gt;%
+          group_by(INCOME_LEVEL) %&gt;%
+          summarize(Satisfaction_Mean=round(mean(SATISFACTION_LEVEL),3), 
+                    Satisfaction_Median=round(median(SATISFACTION_LEVEL),3), 
+                    Satisfaction_SD=round(sd(SATISFACTION_LEVEL),3))
+
+df4 &lt;- merge(df41, df42, by=&quot;INCOME_LEVEL&quot;)
+
+knitr::kable(df4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">INCOME_LEVEL</th>
+<th align="right">Number_of_Households</th>
+<th align="right">Satisfaction_Mean</th>
+<th align="right">Satisfaction_Median</th>
+<th align="right">Satisfaction_SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">0-2.5K</td>
+<td align="right">31</td>
+<td align="right">7.355</td>
+<td align="right">8</td>
+<td align="right">1.976</td>
+</tr>
+<tr class="even">
+<td align="left">10-20K</td>
+<td align="right">120</td>
+<td align="right">6.892</td>
+<td align="right">7</td>
+<td align="right">2.233</td>
+</tr>
+<tr class="odd">
+<td align="left">2.5-10K</td>
+<td align="right">148</td>
+<td align="right">6.527</td>
+<td align="right">6</td>
+<td align="right">2.065</td>
+</tr>
+<tr class="even">
+<td align="left">20-40K</td>
+<td align="right">70</td>
+<td align="right">6.829</td>
+<td align="right">7</td>
+<td align="right">1.668</td>
+</tr>
+<tr class="odd">
+<td align="left">40-60K</td>
+<td align="right">8</td>
+<td align="right">6.750</td>
+<td align="right">7</td>
+<td align="right">1.488</td>
+</tr>
+<tr class="even">
+<td align="left">60K-Above</td>
+<td align="right">4</td>
+<td align="right">6.000</td>
+<td align="right">6</td>
+<td align="right">3.266</td>
+</tr>
+</tbody>
+</table>
+<p></br></p>
+</div>
+<div id="distribution-by-education-level" class="section level4">
+<h4>Distribution by Education Level</h4>
+<pre class="r"><code>df51 &lt;- dat %&gt;% 
+          dplyr::count(EDUCATION_LEVEL, sort=FALSE, name=&quot;Number_of_Households&quot;)
+
+df52 &lt;- dat %&gt;% 
+          dplyr::select(EDUCATION_LEVEL, SATISFACTION_LEVEL) %&gt;%
+          group_by(EDUCATION_LEVEL) %&gt;%
+          summarize(Satisfaction_Mean=round(mean(SATISFACTION_LEVEL),3), 
+                    Satisfaction_Median=round(median(SATISFACTION_LEVEL),3), 
+                    Satisfaction_SD=round(sd(SATISFACTION_LEVEL),3))
+
+df5 &lt;- merge(df51, df52, by=&quot;EDUCATION_LEVEL&quot;)
+
+knitr::kable(df5)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">EDUCATION_LEVEL</th>
+<th align="right">Number_of_Households</th>
+<th align="right">Satisfaction_Mean</th>
+<th align="right">Satisfaction_Median</th>
+<th align="right">Satisfaction_SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Illiterate</td>
+<td align="right">178</td>
+<td align="right">6.539</td>
+<td align="right">6</td>
+<td align="right">2.072</td>
+</tr>
+<tr class="even">
+<td align="left">Primary</td>
+<td align="right">80</td>
+<td align="right">7.000</td>
+<td align="right">7</td>
+<td align="right">1.889</td>
+</tr>
+<tr class="odd">
+<td align="left">Secondary</td>
+<td align="right">117</td>
+<td align="right">6.949</td>
+<td align="right">7</td>
+<td align="right">2.133</td>
+</tr>
+<tr class="even">
+<td align="left">University</td>
+<td align="right">6</td>
+<td align="right">6.667</td>
+<td align="right">7</td>
+<td align="right">1.633</td>
+</tr>
+</tbody>
+</table>
+<p></br></p>
+</div>
+<div id="distribution-by-reconstruction-completed-level" class="section level4">
+<h4>Distribution by Reconstruction Completed Level</h4>
+<pre class="r"><code>df61 &lt;- dat %&gt;% 
+          dplyr::count(RECON_COMPLETED, sort=FALSE, name=&quot;Number_of_Households&quot;)
+
+df62 &lt;- dat %&gt;% 
+          dplyr::select(RECON_COMPLETED, SATISFACTION_LEVEL) %&gt;%
+          group_by(RECON_COMPLETED) %&gt;%
+          summarize(Satisfaction_Mean=round(mean(SATISFACTION_LEVEL),3), 
+                    Satisfaction_Median=round(median(SATISFACTION_LEVEL),3), 
+                    Satisfaction_SD=round(sd(SATISFACTION_LEVEL),3))
+
+df6 &lt;- merge(df61, df62, by=&quot;RECON_COMPLETED&quot;)
+
+knitr::kable(df6)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">RECON_COMPLETED</th>
+<th align="right">Number_of_Households</th>
+<th align="right">Satisfaction_Mean</th>
+<th align="right">Satisfaction_Median</th>
+<th align="right">Satisfaction_SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">100</td>
+<td align="right">292</td>
+<td align="right">6.818</td>
+<td align="right">7.0</td>
+<td align="right">2.089</td>
+</tr>
+<tr class="even">
+<td align="left">20</td>
+<td align="right">24</td>
+<td align="right">6.208</td>
+<td align="right">5.5</td>
+<td align="right">2.146</td>
+</tr>
+<tr class="odd">
+<td align="left">40</td>
+<td align="right">14</td>
+<td align="right">6.429</td>
+<td align="right">6.5</td>
+<td align="right">2.102</td>
+</tr>
+<tr class="even">
+<td align="left">60</td>
+<td align="right">7</td>
+<td align="right">6.000</td>
+<td align="right">6.0</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="odd">
+<td align="left">80</td>
+<td align="right">44</td>
+<td align="right">6.932</td>
+<td align="right">7.0</td>
+<td align="right">1.848</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="distribution-of-satisfaction-level" class="section level3">
+<h3>Distribution of Satisfaction Level</h3>
+<pre class="r"><code>p1 &lt;- ggplot(dat, aes(x=SATISFACTION_LEVEL)) +
+        geom_histogram(aes(y=..density..), position=&quot;identity&quot;, color=&quot;#FFFFFF&quot;, fill=&quot;#377eb8&quot;, bins=10) +
+        scale_x_continuous(breaks=seq(0,10,by=1)) +
+        theme(
+          axis.text.x = element_text(size = 10, color=&quot;#000000&quot;),
+          axis.text.y = element_text(size = 10, color=&quot;#000000&quot;),
+          axis.title.x = element_text(size = 10, color=&quot;#000000&quot;),
+          axis.title.y = element_text(size = 10, color=&quot;#000000&quot;),
+          plot.title = element_text(size = 10, color=&quot;#000000&quot;, hjust=0.5),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_line(size=0.4, color=&quot;#000000&quot;), 
+          strip.text = element_text(size=10, color=&quot;#000000&quot;),
+          strip.background = element_rect(fill=&quot;#FFFFFF&quot;, color=&quot;#FFFFFF&quot;),
+          panel.background = element_rect(fill=&quot;#FFFFFF&quot;, color=&quot;#000000&quot;),
+          legend.text = element_text(size = 10, color=&quot;#000000&quot;),
+          legend.title = element_blank(),
+          legend.key.size = unit(0.5, &quot;cm&quot;),
+          legend.position = &quot;none&quot;) +
+        ylab(&quot;Probability  Density&quot;) +
+        xlab(&quot;Satisfaction Level&quot;) + 
+        ggtitle(&quot;&quot;)</code></pre>
+<pre class="r"><code>p1</code></pre>
+<p><img src="exploratory_analysis_files/figure-html/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div id="distribution-of-satisfaction-level-by-ethnicity" class="section level4">
+<h4>Distribution of Satisfaction Level (by Ethnicity)</h4>
+<pre class="r"><code>p2 &lt;- ggplot(dat, aes(x=SATISFACTION_LEVEL)) +
+        geom_histogram(aes(y=..density..), position=&quot;identity&quot;, color=&quot;#FFFFFF&quot;, fill=&quot;#377eb8&quot;, bins=10) +
+        scale_x_continuous(breaks=seq(0,10,by=1)) +
+        facet_wrap(~ETHNICITY, nrow=2, scales=&quot;fixed&quot;) +
+        theme(
+          axis.text.x = element_text(size = 10, color=&quot;#000000&quot;),
+          axis.text.y = element_text(size = 10, color=&quot;#000000&quot;),
+          axis.title.x = element_text(size = 10, color=&quot;#000000&quot;),
+          axis.title.y = element_text(size = 10, color=&quot;#000000&quot;),
+          plot.title = element_text(size = 10, color=&quot;#000000&quot;, hjust=0.5),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_line(size=0.4, color=&quot;#000000&quot;), 
+          strip.text = element_text(size=10, color=&quot;#000000&quot;, hjust=0.5),
+          strip.background = element_rect(fill=&quot;#FFFFFF&quot;, color=&quot;#FFFFFF&quot;),
+          panel.background = element_rect(fill=&quot;#FFFFFF&quot;, color=&quot;#000000&quot;),
+          legend.text = element_text(size = 10, color=&quot;#000000&quot;),
+          legend.title = element_blank(),
+          legend.key.size = unit(0.5, &quot;cm&quot;),
+          legend.position = &quot;none&quot;) +
+        ylab(&quot;Probability  Density&quot;) +
+        xlab(&quot;Satisfaction Level&quot;) + 
+        ggtitle(&quot;&quot;)</code></pre>
+<pre class="r"><code>p2</code></pre>
+<p><img src="exploratory_analysis_files/figure-html/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="distribution-of-satisfaction-level-by-sex" class="section level4">
+<h4>Distribution of Satisfaction Level (by Sex)</h4>
+<pre class="r"><code>p3 &lt;- ggplot(dat, aes(x=SATISFACTION_LEVEL)) +
+        geom_histogram(aes(y=..density..), position=&quot;identity&quot;, color=&quot;#FFFFFF&quot;, fill=&quot;#377eb8&quot;, bins=10) +
+        scale_x_continuous(breaks=seq(0,10,by=1)) +
+        facet_wrap(~SEX, nrow=1, scales=&quot;fixed&quot;) +
+        theme(
+          axis.text.x = element_text(size = 10, color=&quot;#000000&quot;),
+          axis.text.y = element_text(size = 10, color=&quot;#000000&quot;),
+          axis.title.x = element_text(size = 10, color=&quot;#000000&quot;),
+          axis.title.y = element_text(size = 10, color=&quot;#000000&quot;),
+          plot.title = element_text(size = 10, color=&quot;#000000&quot;, hjust=0.5),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_line(size=0.4, color=&quot;#000000&quot;), 
+          strip.text = element_text(size=10, color=&quot;#000000&quot;, hjust=0.5),
+          strip.background = element_rect(fill=&quot;#FFFFFF&quot;, color=&quot;#FFFFFF&quot;),
+          panel.background = element_rect(fill=&quot;#FFFFFF&quot;, color=&quot;#000000&quot;),
+          legend.text = element_text(size = 10, color=&quot;#000000&quot;),
+          legend.title = element_blank(),
+          legend.key.size = unit(0.5, &quot;cm&quot;),
+          legend.position = &quot;none&quot;) +
+        ylab(&quot;Probability  Density&quot;) +
+        xlab(&quot;Satisfaction Level&quot;) + 
+        ggtitle(&quot;&quot;)</code></pre>
+<pre class="r"><code>p3</code></pre>
+<p><img src="exploratory_analysis_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="distribution-of-satisfaction-level-by-ethnicity-and-sex" class="section level4">
+<h4>Distribution of Satisfaction Level (by Ethnicity and Sex)</h4>
+<pre class="r"><code>p4 &lt;- ggplot(dat, aes(x=SATISFACTION_LEVEL)) +
+        geom_histogram(aes(y=..density..), position=&quot;identity&quot;, color=&quot;#FFFFFF&quot;, fill=&quot;#377eb8&quot;, bins=10) +
+        scale_x_continuous(breaks=seq(0,10,by=1)) +
+        facet_grid(SEX~ETHNICITY, scales=&quot;fixed&quot;) +
+        theme(
+          axis.text.x = element_text(size = 10, color=&quot;#000000&quot;),
+          axis.text.y = element_text(size = 10, color=&quot;#000000&quot;),
+          axis.title.x = element_text(size = 10, color=&quot;#000000&quot;),
+          axis.title.y = element_text(size = 10, color=&quot;#000000&quot;),
+          plot.title = element_text(size = 10, color=&quot;#000000&quot;, hjust=0.5),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_line(size=0.4, color=&quot;#000000&quot;), 
+          strip.text = element_text(size=10, color=&quot;#000000&quot;, hjust=0.5),
+          strip.background = element_rect(fill=&quot;#FFFFFF&quot;, color=&quot;#FFFFFF&quot;),
+          panel.background = element_rect(fill=&quot;#FFFFFF&quot;, color=&quot;#000000&quot;),
+          legend.text = element_text(size = 10, color=&quot;#000000&quot;),
+          legend.title = element_blank(),
+          legend.key.size = unit(0.5, &quot;cm&quot;),
+          legend.position = &quot;none&quot;) +
+        ylab(&quot;Probability  Density&quot;) +
+        xlab(&quot;Satisfaction Level&quot;) + 
+        ggtitle(&quot;&quot;)</code></pre>
+<pre class="r"><code>p4</code></pre>
+<p><img src="exploratory_analysis_files/figure-html/unnamed-chunk-18-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
