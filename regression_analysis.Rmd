@@ -65,7 +65,7 @@ dat$FREEDOM_CHOICE <- as.factor(dat$FREEDOM_CHOICE)
 ### Ordered Logistic Regression between Satisfaction Level and its all potential predictors
 ```{r message=FALSE}
 # FIT ORDERED LOGISTIC REGRESSION ---
-fit.mc <- MASS::polr(SATISFACTION_LEVEL ~ SEX+ETHNICITY+FREEDOM_CHOICE+EDUCATION_LEVEL+OCCUPATION+RECON_COMPLETED+DISTRICT+INCOME_LEVEL, data=dat, Hess=TRUE, method="logistic")
+fit.mc <- MASS::polr(SATISFACTION_LEVEL ~ SEX+ETHNICITY+FREEDOM_CHOICE+EDUCATION_LEVEL+OCCUPATION+RECON_COMPLETED+DISTRICT+INCOME_LEVEL+AGE, data=dat, Hess=TRUE, method="logistic")
 
 # CALCULATE P-VALUE ---
 summary_table <- coef(summary(fit.mc))
@@ -122,6 +122,48 @@ rmarkdown::paged_table(summary_table_st)
 ```{r}
 # ANOVA 
 car::Anova(fit.m)
+```
+
+
+
+### Heteroscedasticity Robust stdandard errors and p-values 
+```{r}
+#lmtest::coeftest(fit.m, vcov = sandwich::vcovHC(fit.m, type = "HC0"))
+coef_t <- lmtest::coeftest(fit.m)
+
+coef_t
+```
+
+### Odds Ratios with robust confidence intervals
+```{r}
+#robust_sr <- sqrt(diag( sandwich::vcovHC(fit.m, type = "HC0") ))
+#y_or <- exp(coef(fit.m))
+#robust_or <- cbind(coef_t, y_or, LL=exp(coef(fit.m) - 1.96 * robust_sr), UL = exp(coef(fit.m) + 1.96 * robust_sr))
+
+#robust_or
+```
+
+### Test for Proportional Odds assumption
+```{r}
+suppressWarnings(brant::brant(fit.m))
+```
+
+
+### Bootstrapping of Odds ratio (OR) with 95% CI (Type=bca): OR = exp(coef)
+```{r}
+or_boot <- suppressWarnings(car::Boot(fit.m, f = function(fit.m) exp(coef(fit.m)), R=1000))
+df.or_boot <- format(as.data.frame(confint(or_boot, type="bca")), digits=3, scientific=FALSE)
+
+knitr::kable(df.or_boot, align="ll")
+```
+
+
+### Bootstrapping for Coeffcients with 95% CI (Type= bca)
+```{r}
+beta_boot <- suppressWarnings(car::Boot(fit.m, R=1000))
+df.beta_boot <- format(as.data.frame(confint(beta_boot, type="bca")), digits=3, scientific=FALSE)
+
+knitr::kable(df.beta_boot, align="ll")
 ```
 
 </br></br>

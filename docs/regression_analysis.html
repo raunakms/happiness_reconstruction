@@ -364,7 +364,7 @@ dat$FREEDOM_CHOICE &lt;- as.factor(dat$FREEDOM_CHOICE)
 <div id="ordered-logistic-regression-between-satisfaction-level-and-its-all-potential-predictors" class="section level3">
 <h3>Ordered Logistic Regression between Satisfaction Level and its all potential predictors</h3>
 <pre class="r"><code># FIT ORDERED LOGISTIC REGRESSION ---
-fit.mc &lt;- MASS::polr(SATISFACTION_LEVEL ~ SEX+ETHNICITY+FREEDOM_CHOICE+EDUCATION_LEVEL+OCCUPATION+RECON_COMPLETED+DISTRICT+INCOME_LEVEL, data=dat, Hess=TRUE, method=&quot;logistic&quot;)
+fit.mc &lt;- MASS::polr(SATISFACTION_LEVEL ~ SEX+ETHNICITY+FREEDOM_CHOICE+EDUCATION_LEVEL+OCCUPATION+RECON_COMPLETED+DISTRICT+INCOME_LEVEL+AGE, data=dat, Hess=TRUE, method=&quot;logistic&quot;)
 
 # CALCULATE P-VALUE ---
 summary_table &lt;- coef(summary(fit.mc))
@@ -380,7 +380,7 @@ summary_table_var &lt;- as.data.frame(cbind(summary_table[1:nrow(tbl_oddratio),]
 rmarkdown::paged_table(format(summary_table_var, digits=3), options=list(rows.print=10))  </code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Value"],"name":[1],"type":["S3: AsIs"],"align":["right"]},{"label":["Std. Error"],"name":[2],"type":["S3: AsIs"],"align":["right"]},{"label":["t value"],"name":[3],"type":["S3: AsIs"],"align":["right"]},{"label":["p value"],"name":[4],"type":["S3: AsIs"],"align":["right"]},{"label":["OddRatio"],"name":[5],"type":["S3: AsIs"],"align":["right"]},{"label":["2.5 %"],"name":[6],"type":["S3: AsIs"],"align":["right"]},{"label":["97.5 %"],"name":[7],"type":["S3: AsIs"],"align":["right"]}],"data":[{"1":"-0.4642","2":"0.208","3":"-2.2292","4":"0.0258","5":"0.629","6":"0.4172","7":"0.944","_rn_":"SEXFemale"},{"1":"-0.4337","2":"0.406","3":"-1.0680","4":"0.2855","5":"0.648","6":"0.2913","7":"1.436","_rn_":"ETHNICITYChhetri"},{"1":"-0.6679","2":"0.417","3":"-1.6033","4":"0.1089","5":"0.513","6":"0.2255","7":"1.158","_rn_":"ETHNICITYDalit-Others"},{"1":"-0.8287","2":"0.374","3":"-2.2175","4":"0.0266","5":"0.437","6":"0.2089","7":"0.906","_rn_":"ETHNICITYGurung-Magar"},{"1":"-0.7541","2":"0.437","3":"-1.7239","4":"0.0847","5":"0.470","6":"0.1988","7":"1.108","_rn_":"ETHNICITYNewar"},{"1":"-1.4067","2":"0.365","3":"-3.8529","4":"0.0001","5":"0.245","6":"0.1190","7":"0.499","_rn_":"ETHNICITYTamang"},{"1":"1.1230","2":"0.989","3":"1.1357","4":"0.2561","5":"3.074","6":"0.4373","7":"20.522","_rn_":"FREEDOM_CHOICE2"},{"1":"1.0600","2":"0.554","3":"1.9142","4":"0.0556","5":"2.886","6":"0.9695","7":"8.536","_rn_":"FREEDOM_CHOICE3"},{"1":"1.0515","2":"0.463","3":"2.2712","4":"0.0231","5":"2.862","6":"1.1568","7":"7.121","_rn_":"FREEDOM_CHOICE4"},{"1":"1.2262","2":"0.417","3":"2.9374","4":"0.0033","5":"3.408","6":"1.5054","7":"7.751","_rn_":"FREEDOM_CHOICE5"},{"1":"2.1089","2":"0.432","3":"4.8853","4":"0.0000","5":"8.239","6":"3.5550","7":"19.356","_rn_":"FREEDOM_CHOICE6"},{"1":"2.5219","2":"0.436","3":"5.7807","4":"0.0000","5":"12.452","6":"5.3252","7":"29.518","_rn_":"FREEDOM_CHOICE7"},{"1":"2.8461","2":"0.525","3":"5.4169","4":"0.0000","5":"17.220","6":"6.1721","7":"48.630","_rn_":"FREEDOM_CHOICE8"},{"1":"3.8100","2":"0.564","3":"6.7600","4":"0.0000","5":"45.149","6":"15.1722","7":"139.206","_rn_":"FREEDOM_CHOICE9"},{"1":"3.5119","2":"0.486","3":"7.2245","4":"0.0000","5":"33.512","6":"13.0437","7":"87.906","_rn_":"FREEDOM_CHOICE10"},{"1":"0.3459","2":"0.265","3":"1.3067","4":"0.1913","5":"1.413","6":"0.8412","7":"2.377","_rn_":"EDUCATION_LEVELPrimary"},{"1":"0.3162","2":"0.246","3":"1.2865","4":"0.1983","5":"1.372","6":"0.8479","7":"2.224","_rn_":"EDUCATION_LEVELSecondary"},{"1":"0.1660","2":"0.806","3":"0.2059","4":"0.8368","5":"1.181","6":"0.2385","7":"5.820","_rn_":"EDUCATION_LEVELUniversity"},{"1":"-0.4459","2":"0.342","3":"-1.3038","4":"0.1923","5":"0.640","6":"0.3261","7":"1.250","_rn_":"OCCUPATIONBusiness"},{"1":"-0.7058","2":"0.626","3":"-1.1282","4":"0.2593","5":"0.494","6":"0.1442","7":"1.715","_rn_":"OCCUPATIONGoverment Employee"},{"1":"-0.2119","2":"0.284","3":"-0.7453","4":"0.4561","5":"0.809","6":"0.4627","7":"1.413","_rn_":"OCCUPATIONLabour"},{"1":"0.1249","2":"1.100","3":"0.1135","4":"0.9096","5":"1.133","6":"0.1150","7":"11.075","_rn_":"OCCUPATIONTeacher"},{"1":"0.9842","2":"0.651","3":"1.5123","4":"0.1305","5":"2.676","6":"0.7411","7":"9.578","_rn_":"RECON_COMPLETED40"},{"1":"-0.0748","2":"0.765","3":"-0.0979","4":"0.9220","5":"0.928","6":"0.2050","7":"4.191","_rn_":"RECON_COMPLETED60"},{"1":"0.2127","2":"0.472","3":"0.4509","4":"0.6520","5":"1.237","6":"0.4896","7":"3.127","_rn_":"RECON_COMPLETED80"},{"1":"0.5174","2":"0.407","3":"1.2700","4":"0.2041","5":"1.678","6":"0.7524","7":"3.739","_rn_":"RECON_COMPLETED100"},{"1":"0.3911","2":"0.238","3":"1.6431","4":"0.1004","5":"1.479","6":"0.9281","7":"2.361","_rn_":"DISTRICTSindhupalchowk"},{"1":"-0.4516","2":"0.375","3":"-1.2058","4":"0.2279","5":"0.637","6":"0.3043","7":"1.326","_rn_":"INCOME_LEVEL2.5-10K"},{"1":"-0.2927","2":"0.396","3":"-0.7397","4":"0.4595","5":"0.746","6":"0.3416","7":"1.617","_rn_":"INCOME_LEVEL10-20K"},{"1":"-0.2282","2":"0.422","3":"-0.5402","4":"0.5891","5":"0.796","6":"0.3465","7":"1.821","_rn_":"INCOME_LEVEL20-40K"},{"1":"-0.9397","2":"0.722","3":"-1.3016","4":"0.1930","5":"0.391","6":"0.0920","7":"1.597","_rn_":"INCOME_LEVEL40-60K"},{"1":"-1.6099","2":"1.016","3":"-1.5846","4":"0.1131","5":"0.200","6":"0.0261","7":"1.523","_rn_":"INCOME_LEVEL60K-Above"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Value"],"name":[1],"type":["S3: AsIs"],"align":["right"]},{"label":["Std. Error"],"name":[2],"type":["S3: AsIs"],"align":["right"]},{"label":["t value"],"name":[3],"type":["S3: AsIs"],"align":["right"]},{"label":["p value"],"name":[4],"type":["S3: AsIs"],"align":["right"]},{"label":["OddRatio"],"name":[5],"type":["S3: AsIs"],"align":["right"]},{"label":["2.5 %"],"name":[6],"type":["S3: AsIs"],"align":["right"]},{"label":["97.5 %"],"name":[7],"type":["S3: AsIs"],"align":["right"]}],"data":[{"1":"-0.54710","2":"0.24472","3":"-2.23564","4":"0.0254","5":"0.579","6":"0.3572","7":"0.933","_rn_":"SEXFemale"},{"1":"-0.46027","2":"0.40849","3":"-1.12677","4":"0.2598","5":"0.631","6":"0.2823","7":"1.404","_rn_":"ETHNICITYChhetri"},{"1":"-0.74168","2":"0.43252","3":"-1.71479","4":"0.0864","5":"0.476","6":"0.2028","7":"1.108","_rn_":"ETHNICITYDalit-Others"},{"1":"-0.85447","2":"0.37642","3":"-2.27001","4":"0.0232","5":"0.426","6":"0.2024","7":"0.888","_rn_":"ETHNICITYGurung-Magar"},{"1":"-0.80109","2":"0.44384","3":"-1.80489","4":"0.0711","5":"0.449","6":"0.1873","7":"1.070","_rn_":"ETHNICITYNewar"},{"1":"-1.49919","2":"0.39294","3":"-3.81536","4":"0.0001","5":"0.223","6":"0.1025","7":"0.480","_rn_":"ETHNICITYTamang"},{"1":"1.07932","2":"0.98991","3":"1.09032","4":"0.2756","5":"2.943","6":"0.4179","7":"19.733","_rn_":"FREEDOM_CHOICE2"},{"1":"1.10502","2":"0.55899","3":"1.97682","4":"0.0481","5":"3.019","6":"1.0048","7":"9.030","_rn_":"FREEDOM_CHOICE3"},{"1":"1.06516","2":"0.46387","3":"2.29626","4":"0.0217","5":"2.901","6":"1.1710","7":"7.234","_rn_":"FREEDOM_CHOICE4"},{"1":"1.23205","2":"0.41766","3":"2.94990","4":"0.0032","5":"3.428","6":"1.5139","7":"7.802","_rn_":"FREEDOM_CHOICE5"},{"1":"2.12430","2":"0.43241","3":"4.91265","4":"0.0000","5":"8.367","6":"3.6057","7":"19.689","_rn_":"FREEDOM_CHOICE6"},{"1":"2.54088","2":"0.43753","3":"5.80727","4":"0.0000","5":"12.691","6":"5.4148","7":"30.165","_rn_":"FREEDOM_CHOICE7"},{"1":"2.85252","2":"0.52479","3":"5.43554","4":"0.0000","5":"17.331","6":"6.2197","7":"48.890","_rn_":"FREEDOM_CHOICE8"},{"1":"3.84806","2":"0.56704","3":"6.78626","4":"0.0000","5":"46.902","6":"15.6620","7":"145.663","_rn_":"FREEDOM_CHOICE9"},{"1":"3.53091","2":"0.48644","3":"7.25871","4":"0.0000","5":"34.155","6":"13.2864","7":"89.651","_rn_":"FREEDOM_CHOICE10"},{"1":"0.28630","2":"0.28046","3":"1.02079","4":"0.3074","5":"1.331","6":"0.7680","7":"2.308","_rn_":"EDUCATION_LEVELPrimary"},{"1":"0.18583","2":"0.31769","3":"0.58493","4":"0.5586","5":"1.204","6":"0.6458","7":"2.247","_rn_":"EDUCATION_LEVELSecondary"},{"1":"0.00759","2":"0.84202","3":"0.00901","4":"0.9928","5":"1.008","6":"0.1894","7":"5.321","_rn_":"EDUCATION_LEVELUniversity"},{"1":"-0.46840","2":"0.34339","3":"-1.36405","4":"0.1726","5":"0.626","6":"0.3180","7":"1.226","_rn_":"OCCUPATIONBusiness"},{"1":"-0.69809","2":"0.62457","3":"-1.11772","4":"0.2637","5":"0.498","6":"0.1455","7":"1.723","_rn_":"OCCUPATIONGoverment Employee"},{"1":"-0.25998","2":"0.29417","3":"-0.88378","4":"0.3768","5":"0.771","6":"0.4324","7":"1.372","_rn_":"OCCUPATIONLabour"},{"1":"0.12429","2":"1.10899","3":"0.11207","4":"0.9108","5":"1.132","6":"0.1131","7":"11.228","_rn_":"OCCUPATIONTeacher"},{"1":"1.00383","2":"0.65012","3":"1.54407","4":"0.1226","5":"2.729","6":"0.7568","7":"9.755","_rn_":"RECON_COMPLETED40"},{"1":"-0.04740","2":"0.76246","3":"-0.06217","4":"0.9504","5":"0.954","6":"0.2113","7":"4.286","_rn_":"RECON_COMPLETED60"},{"1":"0.23313","2":"0.47299","3":"0.49290","4":"0.6221","5":"1.263","6":"0.4985","7":"3.199","_rn_":"RECON_COMPLETED80"},{"1":"0.54367","2":"0.40972","3":"1.32693","4":"0.1845","5":"1.722","6":"0.7692","7":"3.856","_rn_":"RECON_COMPLETED100"},{"1":"0.38914","2":"0.23814","3":"1.63405","4":"0.1022","5":"1.476","6":"0.9261","7":"2.358","_rn_":"DISTRICTSindhupalchowk"},{"1":"-0.47999","2":"0.37785","3":"-1.27031","4":"0.2040","5":"0.619","6":"0.2938","7":"1.297","_rn_":"INCOME_LEVEL2.5-10K"},{"1":"-0.32210","2":"0.39915","3":"-0.80698","4":"0.4197","5":"0.725","6":"0.3292","7":"1.580","_rn_":"INCOME_LEVEL10-20K"},{"1":"-0.27204","2":"0.42854","3":"-0.63481","4":"0.5256","5":"0.762","6":"0.3274","7":"1.763","_rn_":"INCOME_LEVEL20-40K"},{"1":"-0.95603","2":"0.72398","3":"-1.32051","4":"0.1867","5":"0.384","6":"0.0901","7":"1.576","_rn_":"INCOME_LEVEL40-60K"},{"1":"-1.55837","2":"1.02219","3":"-1.52454","4":"0.1274","5":"0.210","6":"0.0270","7":"1.616","_rn_":"INCOME_LEVEL60K-Above"},{"1":"-0.00571","2":"0.00882","3":"-0.64697","4":"0.5177","5":"0.994","6":"0.9772","7":"1.012","_rn_":"AGE"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -392,14 +392,15 @@ car::Anova(fit.mc)</code></pre>
 ## 
 ## Response: SATISFACTION_LEVEL
 ##                 LR Chisq Df Pr(&gt;Chisq)    
-## SEX                4.997  1   0.025392 *  
-## ETHNICITY         18.806  5   0.002089 ** 
-## FREEDOM_CHOICE   103.481  9  &lt; 2.2e-16 ***
-## EDUCATION_LEVEL    2.355  3   0.502046    
-## OCCUPATION         2.996  4   0.558426    
-## RECON_COMPLETED    3.983  4   0.408353    
-## DISTRICT           2.708  1   0.099825 .  
-## INCOME_LEVEL       4.453  5   0.486142    
+## SEX                5.036  1   0.024823 *  
+## ETHNICITY         18.175  5   0.002734 ** 
+## FREEDOM_CHOICE   103.834  9  &lt; 2.2e-16 ***
+## EDUCATION_LEVEL    1.097  3   0.777837    
+## OCCUPATION         3.252  4   0.516514    
+## RECON_COMPLETED    4.139  4   0.387569    
+## DISTRICT           2.679  1   0.101701    
+## INCOME_LEVEL       4.282  5   0.509548    
+## AGE                0.419  1   0.517282    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The above analysis reveals that the effects of variables such as, location, education, income, physical level of reconstruction, and occupation on the self-reported level of happiness are not statistically significant (at 95% confidence level). However, the effects of variables such as, Sex, Ethnicity, and Freedom of Choice on the happiness level were found to statistically significant. Thus, we redo the above analysis considering only Sex, Ethinicity, and Freedom of Choice. </br></br></p>
@@ -448,6 +449,271 @@ car::Anova(fit.m)</code></pre>
 ## FREEDOM_CHOICE  105.780  9  &lt; 2.2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="heteroscedasticity-robust-stdandard-errors-and-p-values" class="section level3">
+<h3>Heteroscedasticity Robust stdandard errors and p-values</h3>
+<pre class="r"><code>#lmtest::coeftest(fit.m, vcov = sandwich::vcovHC(fit.m, type = &quot;HC0&quot;))
+coef_t &lt;- lmtest::coeftest(fit.m)
+
+coef_t</code></pre>
+<pre><code>## 
+## t test of coefficients:
+## 
+##                       Estimate Std. Error t value  Pr(&gt;|t|)    
+## SEXFemale             -0.38499    0.19275 -1.9973 0.0465478 *  
+## ETHNICITYChhetri      -0.42708    0.38381 -1.1127 0.2665783    
+## ETHNICITYDalit-Others -0.58535    0.38720 -1.5117 0.1314839    
+## ETHNICITYGurung-Magar -0.85210    0.34787 -2.4495 0.0147853 *  
+## ETHNICITYNewar        -0.61719    0.41166 -1.4993 0.1346887    
+## ETHNICITYTamang       -1.29017    0.33836 -3.8130 0.0001617 ***
+## FREEDOM_CHOICE2        1.08959    1.00006  1.0895 0.2766578    
+## FREEDOM_CHOICE3        0.90142    0.51501  1.7503 0.0809288 .  
+## FREEDOM_CHOICE4        0.84210    0.44009  1.9135 0.0564880 .  
+## FREEDOM_CHOICE5        1.00371    0.39180  2.5618 0.0108239 *  
+## FREEDOM_CHOICE6        1.89603    0.40407  4.6924 3.853e-06 ***
+## FREEDOM_CHOICE7        2.24556    0.40651  5.5239 6.398e-08 ***
+## FREEDOM_CHOICE8        2.65805    0.50061  5.3097 1.935e-07 ***
+## FREEDOM_CHOICE9        3.68063    0.53650  6.8605 3.041e-11 ***
+## FREEDOM_CHOICE10       3.39775    0.46811  7.2584 2.465e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="odds-ratios-with-robust-confidence-intervals" class="section level3">
+<h3>Odds Ratios with robust confidence intervals</h3>
+<pre class="r"><code>#robust_sr &lt;- sqrt(diag( sandwich::vcovHC(fit.m, type = &quot;HC0&quot;) ))
+#y_or &lt;- exp(coef(fit.m))
+#robust_or &lt;- cbind(coef_t, y_or, LL=exp(coef(fit.m) - 1.96 * robust_sr), UL = exp(coef(fit.m) + 1.96 * robust_sr))
+
+#robust_or</code></pre>
+</div>
+<div id="test-for-proportional-odds-assumption" class="section level3">
+<h3>Test for Proportional Odds assumption</h3>
+<pre class="r"><code>suppressWarnings(brant::brant(fit.m))</code></pre>
+<pre><code>## ---------------------------------------------------- 
+## Test for     X2  df  probability 
+## ---------------------------------------------------- 
+## Omnibus          5928.51 120 0
+## SEXFemale        27.11   8   0
+## ETHNICITYChhetri 2.2 8   0.97
+## ETHNICITYDalit-Others    2.17    8   0.98
+## ETHNICITYGurung-Magar    2.86    8   0.94
+## ETHNICITYNewar       5.42    8   0.71
+## ETHNICITYTamang  1.9 8   0.98
+## FREEDOM_CHOICE2  19.35   8   0.01
+## FREEDOM_CHOICE3  9.99    8   0.27
+## FREEDOM_CHOICE4  10.65   8   0.22
+## FREEDOM_CHOICE5  10.2    8   0.25
+## FREEDOM_CHOICE6  27.36   8   0
+## FREEDOM_CHOICE7  25.44   8   0
+## FREEDOM_CHOICE8  13.19   8   0.11
+## FREEDOM_CHOICE9  4.92    8   0.77
+## FREEDOM_CHOICE10 12.01   8   0.15
+## ---------------------------------------------------- 
+## 
+## H0: Parallel Regression Assumption holds</code></pre>
+<pre><code>##                                X2  df  probability
+## Omnibus               5928.509021 120 0.0000000000
+## SEXFemale               27.112382   8 0.0006760777
+## ETHNICITYChhetri         2.199557   8 0.9742745286
+## ETHNICITYDalit-Others    2.166315   8 0.9754837970
+## ETHNICITYGurung-Magar    2.864757   8 0.9425557787
+## ETHNICITYNewar           5.419212   8 0.7119732074
+## ETHNICITYTamang          1.898275   8 0.9839731742
+## FREEDOM_CHOICE2         19.347883   8 0.0131058967
+## FREEDOM_CHOICE3          9.988154   8 0.2658583091
+## FREEDOM_CHOICE4         10.648955   8 0.2223939392
+## FREEDOM_CHOICE5         10.203099   8 0.2510594492
+## FREEDOM_CHOICE6         27.361064   8 0.0006123065
+## FREEDOM_CHOICE7         25.436778   8 0.0013104830
+## FREEDOM_CHOICE8         13.187097   8 0.1055722918
+## FREEDOM_CHOICE9          4.919087   8 0.7661881672
+## FREEDOM_CHOICE10        12.009860   8 0.1507645135</code></pre>
+</div>
+<div id="bootstrapping-of-odds-ratio-or-with-95-ci-typebca-or-expcoef" class="section level3">
+<h3>Bootstrapping of Odds ratio (OR) with 95% CI (Type=bca): OR = exp(coef)</h3>
+<pre class="r"><code>or_boot &lt;- suppressWarnings(car::Boot(fit.m, f = function(fit.m) exp(coef(fit.m)), R=1000))
+df.or_boot &lt;- format(as.data.frame(confint(or_boot, type=&quot;bca&quot;)), digits=3, scientific=FALSE)
+
+knitr::kable(df.or_boot, align=&quot;ll&quot;)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">2.5 %</th>
+<th align="left">97.5 %</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SEXFemale</td>
+<td align="left">0.4679</td>
+<td align="left">1.046</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYChhetri</td>
+<td align="left">0.3295</td>
+<td align="left">1.518</td>
+</tr>
+<tr class="odd">
+<td>ETHNICITYDalit-Others</td>
+<td align="left">0.2499</td>
+<td align="left">1.220</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYGurung-Magar</td>
+<td align="left">0.2197</td>
+<td align="left">0.889</td>
+</tr>
+<tr class="odd">
+<td>ETHNICITYNewar</td>
+<td align="left">0.2470</td>
+<td align="left">1.268</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYTamang</td>
+<td align="left">0.1345</td>
+<td align="left">0.557</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE2</td>
+<td align="left">0.0821</td>
+<td align="left">77.339</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE3</td>
+<td align="left">0.6775</td>
+<td align="left">7.494</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE4</td>
+<td align="left">0.8024</td>
+<td align="left">6.524</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE5</td>
+<td align="left">1.0828</td>
+<td align="left">6.307</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE6</td>
+<td align="left">2.6247</td>
+<td align="left">14.117</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE7</td>
+<td align="left">3.7752</td>
+<td align="left">20.046</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE8</td>
+<td align="left">4.3319</td>
+<td align="left">35.192</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE9</td>
+<td align="left">10.5321</td>
+<td align="left">115.045</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE10</td>
+<td align="left">7.7236</td>
+<td align="left">91.930</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="bootstrapping-for-coeffcients-with-95-ci-type-bca" class="section level3">
+<h3>Bootstrapping for Coeffcients with 95% CI (Type= bca)</h3>
+<pre class="r"><code>beta_boot &lt;- suppressWarnings(car::Boot(fit.m, R=1000))
+df.beta_boot &lt;- format(as.data.frame(confint(beta_boot, type=&quot;bca&quot;)), digits=3, scientific=FALSE)
+
+knitr::kable(df.beta_boot, align=&quot;ll&quot;)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">2.5 %</th>
+<th align="left">97.5 %</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SEXFemale</td>
+<td align="left">-0.740</td>
+<td align="left">0.0281</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYChhetri</td>
+<td align="left">-1.208</td>
+<td align="left">0.4396</td>
+</tr>
+<tr class="odd">
+<td>ETHNICITYDalit-Others</td>
+<td align="left">-1.442</td>
+<td align="left">0.1819</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYGurung-Magar</td>
+<td align="left">-1.604</td>
+<td align="left">-0.1483</td>
+</tr>
+<tr class="odd">
+<td>ETHNICITYNewar</td>
+<td align="left">-1.426</td>
+<td align="left">0.2932</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYTamang</td>
+<td align="left">-2.028</td>
+<td align="left">-0.5941</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE2</td>
+<td align="left">-2.414</td>
+<td align="left">4.1484</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE3</td>
+<td align="left">-0.319</td>
+<td align="left">1.8693</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE4</td>
+<td align="left">-0.261</td>
+<td align="left">1.7688</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE5</td>
+<td align="left">0.113</td>
+<td align="left">1.7752</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE6</td>
+<td align="left">0.929</td>
+<td align="left">2.6402</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE7</td>
+<td align="left">1.216</td>
+<td align="left">3.0106</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE8</td>
+<td align="left">1.486</td>
+<td align="left">3.5489</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE9</td>
+<td align="left">2.447</td>
+<td align="left">4.6219</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE10</td>
+<td align="left">2.027</td>
+<td align="left">4.5930</td>
+</tr>
+</tbody>
+</table>
 <p></br></br></p>
 </div>
 <div id="happinesssatistfaction-level-for-each-level-of-freedom-of-choice" class="section level3">
@@ -499,7 +765,7 @@ plotEffect &lt;- function(ef.obj){
     return(p)
 }</code></pre>
 <pre class="r"><code>plotEffect(ef.obj=ef1)</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p></br></br></p>
 </div>
 <div id="happinesssatistfaction-level-for-freedom-of-choice-by-sex-and-ethnicity" class="section level3">
@@ -555,7 +821,7 @@ plotEffect_MultiVar &lt;- function(ef.obj){
     return(p)
 }</code></pre>
 <pre class="r"><code>plotEffect_MultiVar(ef.obj=ef2)</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-15-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-20-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p></br></br></p>
 <pre class="r"><code>ef3 &lt;- effects::Effect(focal.predictors=&quot;FREEDOM_CHOICE&quot;, mod=fit.m, 
                        xlevels=list(FREEDOM_CHOICE = 1:10, 2))
@@ -614,7 +880,7 @@ plotProbEffect &lt;- function(ef.obj){
     return(p)
 }</code></pre>
 <pre class="r"><code>plotProbEffect(ef.obj=ef3)</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-18-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-23-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p></br></br></p>
 </div>
 <div id="robustness-check-for-proportional-odds-assumption" class="section level3">

@@ -354,6 +354,36 @@ dat$FREEDOM_CHOICE &lt;- as.factor(dat$FREEDOM_CHOICE)
 <div id="generate-basic-statistics" class="section level3">
 <h3>Generate Basic Statistics</h3>
 <p></br></p>
+<div id="overall-satisfaction-level" class="section level4">
+<h4>Overall Satisfaction Level</h4>
+<pre class="r"><code>dm &lt;- dat %&gt;% 
+          dplyr::summarize(Satisfaction_Mean=round(mean(SATISFACTION_LEVEL),3), 
+                    Satisfaction_Median=round(median(SATISFACTION_LEVEL),3), 
+                    Satisfaction_SD=round(sd(SATISFACTION_LEVEL),3))
+
+knitr::kable(dm)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Satisfaction_Mean</th>
+<th align="right">Satisfaction_Median</th>
+<th align="right">Satisfaction_SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">6.764</td>
+<td align="right">7</td>
+<td align="right">2.052</td>
+</tr>
+<tr class="even">
+<td align="right"></br></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div id="distribution-by-location" class="section level4">
 <h4>Distribution by Location</h4>
 <pre class="r"><code>df11 &lt;- dat %&gt;% 
@@ -707,6 +737,78 @@ knitr::kable(df6)</code></pre>
 </tr>
 </tbody>
 </table>
+<p></br></p>
+</div>
+<div id="distribution-by-freedom-of-choice" class="section level4">
+<h4>Distribution by Freedom of Choice</h4>
+<pre class="r"><code>df71 &lt;- dat %&gt;% 
+          dplyr::count(RECON_COMPLETED, sort=FALSE, name=&quot;Number_of_Households&quot;)
+
+df72 &lt;- dat %&gt;% 
+          dplyr::select(RECON_COMPLETED, SATISFACTION_LEVEL) %&gt;%
+          group_by(RECON_COMPLETED) %&gt;%
+          summarize(Satisfaction_Mean=round(mean(SATISFACTION_LEVEL),3), 
+                    Satisfaction_Median=round(median(SATISFACTION_LEVEL),3), 
+                    Satisfaction_SD=round(sd(SATISFACTION_LEVEL),3))
+
+df7 &lt;- merge(df71, df72, by=&quot;RECON_COMPLETED&quot;)
+
+knitr::kable(df7)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">RECON_COMPLETED</th>
+<th align="right">Number_of_Households</th>
+<th align="right">Satisfaction_Mean</th>
+<th align="right">Satisfaction_Median</th>
+<th align="right">Satisfaction_SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">100</td>
+<td align="right">292</td>
+<td align="right">6.818</td>
+<td align="right">7.0</td>
+<td align="right">2.089</td>
+</tr>
+<tr class="even">
+<td align="left">20</td>
+<td align="right">24</td>
+<td align="right">6.208</td>
+<td align="right">5.5</td>
+<td align="right">2.146</td>
+</tr>
+<tr class="odd">
+<td align="left">40</td>
+<td align="right">14</td>
+<td align="right">6.429</td>
+<td align="right">6.5</td>
+<td align="right">2.102</td>
+</tr>
+<tr class="even">
+<td align="left">60</td>
+<td align="right">7</td>
+<td align="right">6.000</td>
+<td align="right">6.0</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="odd">
+<td align="left">80</td>
+<td align="right">44</td>
+<td align="right">6.932</td>
+<td align="right">7.0</td>
+<td align="right">1.848</td>
+</tr>
+<tr class="even">
+<td align="left"></br></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="distribution-of-satisfaction-level" class="section level3">
@@ -734,7 +836,7 @@ knitr::kable(df6)</code></pre>
         xlab(&quot;Satisfaction Level&quot;) + 
         ggtitle(&quot;&quot;)</code></pre>
 <pre class="r"><code>p1</code></pre>
-<p><img src="exploratory_analysis_files/figure-html/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="exploratory_analysis_files/figure-html/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div id="distribution-of-satisfaction-level-by-ethnicity" class="section level4">
 <h4>Distribution of Satisfaction Level (by Ethnicity)</h4>
 <pre class="r"><code>p2 &lt;- ggplot(dat, aes(x=SATISFACTION_LEVEL)) +
@@ -761,7 +863,7 @@ knitr::kable(df6)</code></pre>
         xlab(&quot;Satisfaction Level&quot;) + 
         ggtitle(&quot;&quot;)</code></pre>
 <pre class="r"><code>p2</code></pre>
-<p><img src="exploratory_analysis_files/figure-html/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="exploratory_analysis_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="distribution-of-satisfaction-level-by-sex" class="section level4">
 <h4>Distribution of Satisfaction Level (by Sex)</h4>
@@ -789,7 +891,7 @@ knitr::kable(df6)</code></pre>
         xlab(&quot;Satisfaction Level&quot;) + 
         ggtitle(&quot;&quot;)</code></pre>
 <pre class="r"><code>p3</code></pre>
-<p><img src="exploratory_analysis_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="exploratory_analysis_files/figure-html/unnamed-chunk-18-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="distribution-of-satisfaction-level-by-ethnicity-and-sex" class="section level4">
 <h4>Distribution of Satisfaction Level (by Ethnicity and Sex)</h4>
@@ -817,7 +919,7 @@ knitr::kable(df6)</code></pre>
         xlab(&quot;Satisfaction Level&quot;) + 
         ggtitle(&quot;&quot;)</code></pre>
 <pre class="r"><code>p4</code></pre>
-<p><img src="exploratory_analysis_files/figure-html/unnamed-chunk-18-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="exploratory_analysis_files/figure-html/unnamed-chunk-20-1.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 
