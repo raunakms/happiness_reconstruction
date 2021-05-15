@@ -317,12 +317,9 @@ library(&quot;knitr&quot;)</code></pre>
 </div>
 <div id="define-path" class="section level4">
 <h4>Define Path</h4>
-<pre class="r"><code>dir.wrk &lt;- str_replace(getwd(), &quot;/scripts2&quot;, &quot;&quot;)
+<pre class="r"><code>dir.wrk &lt;- getwd()
 dir.data &lt;- file.path(dir.wrk, &quot;dataset/data&quot;)
-dir.annot &lt;- file.path(dir.wrk, &quot;dataset/annotation&quot;)
-dir.script &lt;- file.path(dir.wrk, &quot;scripts2&quot;)
-dir.output &lt;- file.path(dir.wrk, &quot;output&quot;)
-dir.plot &lt;- file.path(dir.wrk, &quot;plots&quot;)</code></pre>
+dir.annot &lt;- file.path(dir.wrk, &quot;dataset/annotation&quot;)</code></pre>
 </div>
 <div id="define-files" class="section level4">
 <h4>Define Files</h4>

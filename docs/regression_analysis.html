@@ -326,12 +326,9 @@ library(&quot;lmtest&quot;)</code></pre>
 </div>
 <div id="define-path" class="section level4">
 <h4>Define Path</h4>
-<pre class="r"><code>dir.wrk &lt;- str_replace(getwd(), &quot;/scripts2&quot;, &quot;&quot;)
+<pre class="r"><code>dir.wrk &lt;- getwd()
 dir.data &lt;- file.path(dir.wrk, &quot;dataset/data&quot;)
-dir.annot &lt;- file.path(dir.wrk, &quot;dataset/annotation&quot;)
-dir.script &lt;- file.path(dir.wrk, &quot;scripts2&quot;)
-dir.output &lt;- file.path(dir.wrk, &quot;output&quot;)
-dir.plot &lt;- file.path(dir.wrk, &quot;plots&quot;)</code></pre>
+dir.annot &lt;- file.path(dir.wrk, &quot;dataset/annotation&quot;)</code></pre>
 </div>
 <div id="define-files" class="section level4">
 <h4>Define Files</h4>
@@ -546,78 +543,78 @@ knitr::kable(df.or_boot, align=&quot;ll&quot;)</code></pre>
 <tbody>
 <tr class="odd">
 <td>SEXFemale</td>
-<td align="left">0.4679</td>
-<td align="left">1.046</td>
+<td align="left">0.4544</td>
+<td align="left">0.999</td>
 </tr>
 <tr class="even">
 <td>ETHNICITYChhetri</td>
-<td align="left">0.3295</td>
-<td align="left">1.518</td>
+<td align="left">0.3086</td>
+<td align="left">1.523</td>
 </tr>
 <tr class="odd">
 <td>ETHNICITYDalit-Others</td>
-<td align="left">0.2499</td>
-<td align="left">1.220</td>
+<td align="left">0.2478</td>
+<td align="left">1.204</td>
 </tr>
 <tr class="even">
 <td>ETHNICITYGurung-Magar</td>
-<td align="left">0.2197</td>
-<td align="left">0.889</td>
+<td align="left">0.2143</td>
+<td align="left">0.867</td>
 </tr>
 <tr class="odd">
 <td>ETHNICITYNewar</td>
-<td align="left">0.2470</td>
-<td align="left">1.268</td>
+<td align="left">0.2386</td>
+<td align="left">1.258</td>
 </tr>
 <tr class="even">
 <td>ETHNICITYTamang</td>
-<td align="left">0.1345</td>
-<td align="left">0.557</td>
+<td align="left">0.1316</td>
+<td align="left">0.542</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE2</td>
-<td align="left">0.0821</td>
-<td align="left">77.339</td>
+<td align="left">0.0795</td>
+<td align="left">62.753</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE3</td>
-<td align="left">0.6775</td>
-<td align="left">7.494</td>
+<td align="left">0.7449</td>
+<td align="left">6.640</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE4</td>
-<td align="left">0.8024</td>
-<td align="left">6.524</td>
+<td align="left">0.7409</td>
+<td align="left">6.631</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE5</td>
-<td align="left">1.0828</td>
-<td align="left">6.307</td>
+<td align="left">1.1123</td>
+<td align="left">5.945</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE6</td>
-<td align="left">2.6247</td>
-<td align="left">14.117</td>
+<td align="left">2.7608</td>
+<td align="left">14.790</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE7</td>
-<td align="left">3.7752</td>
-<td align="left">20.046</td>
+<td align="left">3.5083</td>
+<td align="left">20.042</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE8</td>
-<td align="left">4.3319</td>
-<td align="left">35.192</td>
+<td align="left">2.8888</td>
+<td align="left">32.415</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE9</td>
-<td align="left">10.5321</td>
-<td align="left">115.045</td>
+<td align="left">10.4662</td>
+<td align="left">117.713</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE10</td>
-<td align="left">7.7236</td>
-<td align="left">91.930</td>
+<td align="left">7.5930</td>
+<td align="left">91.723</td>
 </tr>
 </tbody>
 </table>
@@ -639,78 +636,78 @@ knitr::kable(df.beta_boot, align=&quot;ll&quot;)</code></pre>
 <tbody>
 <tr class="odd">
 <td>SEXFemale</td>
-<td align="left">-0.740</td>
-<td align="left">0.0281</td>
+<td align="left">-0.793</td>
+<td align="left">0.030</td>
 </tr>
 <tr class="even">
 <td>ETHNICITYChhetri</td>
-<td align="left">-1.208</td>
-<td align="left">0.4396</td>
+<td align="left">-1.128</td>
+<td align="left">0.445</td>
 </tr>
 <tr class="odd">
 <td>ETHNICITYDalit-Others</td>
-<td align="left">-1.442</td>
-<td align="left">0.1819</td>
+<td align="left">-1.266</td>
+<td align="left">0.173</td>
 </tr>
 <tr class="even">
 <td>ETHNICITYGurung-Magar</td>
-<td align="left">-1.604</td>
-<td align="left">-0.1483</td>
+<td align="left">-1.546</td>
+<td align="left">-0.146</td>
 </tr>
 <tr class="odd">
 <td>ETHNICITYNewar</td>
-<td align="left">-1.426</td>
-<td align="left">0.2932</td>
+<td align="left">-1.402</td>
+<td align="left">0.283</td>
 </tr>
 <tr class="even">
 <td>ETHNICITYTamang</td>
-<td align="left">-2.028</td>
-<td align="left">-0.5941</td>
+<td align="left">-1.936</td>
+<td align="left">-0.543</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE2</td>
-<td align="left">-2.414</td>
-<td align="left">4.1484</td>
+<td align="left">-2.461</td>
+<td align="left">4.356</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE3</td>
-<td align="left">-0.319</td>
-<td align="left">1.8693</td>
+<td align="left">-0.357</td>
+<td align="left">2.030</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE4</td>
-<td align="left">-0.261</td>
-<td align="left">1.7688</td>
+<td align="left">-0.235</td>
+<td align="left">1.724</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE5</td>
-<td align="left">0.113</td>
-<td align="left">1.7752</td>
+<td align="left">0.154</td>
+<td align="left">1.828</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE6</td>
-<td align="left">0.929</td>
-<td align="left">2.6402</td>
+<td align="left">1.024</td>
+<td align="left">2.658</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE7</td>
-<td align="left">1.216</td>
-<td align="left">3.0106</td>
+<td align="left">1.363</td>
+<td align="left">3.015</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE8</td>
-<td align="left">1.486</td>
-<td align="left">3.5489</td>
+<td align="left">1.512</td>
+<td align="left">3.664</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE9</td>
-<td align="left">2.447</td>
-<td align="left">4.6219</td>
+<td align="left">2.326</td>
+<td align="left">4.695</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE10</td>
-<td align="left">2.027</td>
-<td align="left">4.5930</td>
+<td align="left">2.168</td>
+<td align="left">4.549</td>
 </tr>
 </tbody>
 </table>

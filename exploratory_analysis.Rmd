@@ -21,12 +21,9 @@ library("knitr")
 
 #### Define Path
 ```{r tidy=TRUE}
-dir.wrk <- str_replace(getwd(), "/scripts2", "")
+dir.wrk <- getwd()
 dir.data <- file.path(dir.wrk, "dataset/data")
 dir.annot <- file.path(dir.wrk, "dataset/annotation")
-dir.script <- file.path(dir.wrk, "scripts2")
-dir.output <- file.path(dir.wrk, "output")
-dir.plot <- file.path(dir.wrk, "plots")
 ```
 #### Define Files
 ```{r tidy=TRUE}
