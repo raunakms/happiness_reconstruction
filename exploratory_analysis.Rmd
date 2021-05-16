@@ -182,20 +182,23 @@ knitr::kable(df6)
 #### Distribution by Freedom of Choice
 ```{r}
 df71 <- dat %>% 
-          dplyr::count(RECON_COMPLETED, sort=FALSE, name="Number_of_Households")
+          dplyr::count(FREEDOM_CHOICE, sort=FALSE, name="Number_of_Households")
 
 df72 <- dat %>% 
-          dplyr::select(RECON_COMPLETED, SATISFACTION_LEVEL) %>%
-          group_by(RECON_COMPLETED) %>%
+          dplyr::select(FREEDOM_CHOICE, SATISFACTION_LEVEL) %>%
+          group_by(FREEDOM_CHOICE) %>%
           summarize(Satisfaction_Mean=round(mean(SATISFACTION_LEVEL),3), 
                     Satisfaction_Median=round(median(SATISFACTION_LEVEL),3), 
                     Satisfaction_SD=round(sd(SATISFACTION_LEVEL),3))
 
-df7 <- merge(df71, df72, by="RECON_COMPLETED")
+df7 <- merge(df71, df72, by="FREEDOM_CHOICE")
+df7$FREEDOM_CHOICE <- as.numeric(df7$FREEDOM_CHOICE)
+df7 <- df7[order(df7$FREEDOM_CHOICE, decreasing=FALSE),]
 
 knitr::kable(df7)
 ```
 </br>
+
 
 ### Distribution of Satisfaction Level
 ```{r}
