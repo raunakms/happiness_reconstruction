@@ -24,6 +24,7 @@ library("brant")
 library("VGAM")
 library("sandwich")
 library("lmtest")
+library("bucky")
 ```
 
 #### Define Path
@@ -125,42 +126,52 @@ car::Anova(fit.m)
 
 ### Heteroscedasticity Robust stdandard errors and p-values 
 ```{r}
-#lmtest::coeftest(fit.m, vcov = sandwich::vcovHC(fit.m, type = "HC0"))
-coef_t <- lmtest::coeftest(fit.m)
+coef_t <- lmtest::coeftest(fit.m, vcov = sandwich::vcovHC(fit.m, type = "HC0"))
 
 coef_t
 ```
 
 ### Odds Ratios with robust confidence intervals
 ```{r}
-#robust_sr <- sqrt(diag( sandwich::vcovHC(fit.m, type = "HC0") ))
-#y_or <- exp(coef(fit.m))
-#robust_or <- cbind(coef_t, y_or, LL=exp(coef(fit.m) - 1.96 * robust_sr), UL = exp(coef(fit.m) + 1.96 * robust_sr))
+robust_sr <- sqrt(diag( sandwich::vcovHC(fit.m, type = "HC0") ))
+y_or <- exp(coef(fit.m))
+robust_or <- suppressWarnings(
+                cbind(coef_t, y_or, 
+                   LL = exp(coef(fit.m) - 1.96 * robust_sr), 
+                   UL = exp(coef(fit.m) + 1.96 * robust_sr)))
 
-#robust_or
-```
-
-### Test for Proportional Odds assumption
-```{r}
-suppressWarnings(brant::brant(fit.m))
+knitr::kable(format(as.data.frame(robust_or), digits=3), align="lllllll")
 ```
 
 
 ### Bootstrapping of Odds ratio (OR) with 95% CI (Type=bca): OR = exp(coef)
 ```{r}
 or_boot <- suppressWarnings(car::Boot(fit.m, f = function(fit.m) exp(coef(fit.m)), R=1000))
+s_or_boot <- summary(or_boot)
+
+knitr::kable(format(as.data.frame(s_or_boot), digits=3), align="lllll")
+```
+
+
+```{r}
 df.or_boot <- format(as.data.frame(confint(or_boot, type="bca")), digits=3, scientific=FALSE)
 
-knitr::kable(df.or_boot, align="ll")
+knitr::kable(format(df.or_boot, digits=3), align="ll")
 ```
 
 
 ### Bootstrapping for Coeffcients with 95% CI (Type= bca)
 ```{r}
 beta_boot <- suppressWarnings(car::Boot(fit.m, R=1000))
+s_beta_boot <- summary(beta_boot)
+
+knitr::kable(format(as.data.frame(s_beta_boot), digits=3), align="lllll")
+```
+
+```{r}
 df.beta_boot <- format(as.data.frame(confint(beta_boot, type="bca")), digits=3, scientific=FALSE)
 
-knitr::kable(df.beta_boot, align="ll")
+knitr::kable(format(df.beta_boot, digits=3), align="ll")
 ```
 
 </br></br>

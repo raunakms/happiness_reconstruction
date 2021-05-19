@@ -322,7 +322,8 @@ library(&quot;gridExtra&quot;)
 library(&quot;brant&quot;)
 library(&quot;VGAM&quot;)
 library(&quot;sandwich&quot;)
-library(&quot;lmtest&quot;)</code></pre>
+library(&quot;lmtest&quot;)
+library(&quot;bucky&quot;)</code></pre>
 </div>
 <div id="define-path" class="section level4">
 <h4>Define Path</h4>
@@ -449,89 +450,351 @@ car::Anova(fit.m)</code></pre>
 </div>
 <div id="heteroscedasticity-robust-stdandard-errors-and-p-values" class="section level3">
 <h3>Heteroscedasticity Robust stdandard errors and p-values</h3>
-<pre class="r"><code>#lmtest::coeftest(fit.m, vcov = sandwich::vcovHC(fit.m, type = &quot;HC0&quot;))
-coef_t &lt;- lmtest::coeftest(fit.m)
+<pre class="r"><code>coef_t &lt;- lmtest::coeftest(fit.m, vcov = sandwich::vcovHC(fit.m, type = &quot;HC0&quot;))
 
 coef_t</code></pre>
 <pre><code>## 
 ## t test of coefficients:
 ## 
 ##                       Estimate Std. Error t value  Pr(&gt;|t|)    
-## SEXFemale             -0.38499    0.19275 -1.9973 0.0465478 *  
-## ETHNICITYChhetri      -0.42708    0.38381 -1.1127 0.2665783    
-## ETHNICITYDalit-Others -0.58535    0.38720 -1.5117 0.1314839    
-## ETHNICITYGurung-Magar -0.85210    0.34787 -2.4495 0.0147853 *  
-## ETHNICITYNewar        -0.61719    0.41166 -1.4993 0.1346887    
-## ETHNICITYTamang       -1.29017    0.33836 -3.8130 0.0001617 ***
-## FREEDOM_CHOICE2        1.08959    1.00006  1.0895 0.2766578    
-## FREEDOM_CHOICE3        0.90142    0.51501  1.7503 0.0809288 .  
-## FREEDOM_CHOICE4        0.84210    0.44009  1.9135 0.0564880 .  
-## FREEDOM_CHOICE5        1.00371    0.39180  2.5618 0.0108239 *  
-## FREEDOM_CHOICE6        1.89603    0.40407  4.6924 3.853e-06 ***
-## FREEDOM_CHOICE7        2.24556    0.40651  5.5239 6.398e-08 ***
-## FREEDOM_CHOICE8        2.65805    0.50061  5.3097 1.935e-07 ***
-## FREEDOM_CHOICE9        3.68063    0.53650  6.8605 3.041e-11 ***
-## FREEDOM_CHOICE10       3.39775    0.46811  7.2584 2.465e-12 ***
+## SEXFemale             -0.38499    0.19202 -2.0049 0.0457280 *  
+## ETHNICITYChhetri      -0.42708    0.37903 -1.1268 0.2606014    
+## ETHNICITYDalit-Others -0.58535    0.36637 -1.5977 0.1109925    
+## ETHNICITYGurung-Magar -0.85210    0.34197 -2.4918 0.0131646 *  
+## ETHNICITYNewar        -0.61719    0.39302 -1.5704 0.1172113    
+## ETHNICITYTamang       -1.29017    0.33796 -3.8176 0.0001588 ***
+## FREEDOM_CHOICE2        1.08959    2.14033  0.5091 0.6110126    
+## FREEDOM_CHOICE3        0.90142    0.53259  1.6925 0.0914215 .  
+## FREEDOM_CHOICE4        0.84210    0.48947  1.7204 0.0862221 .  
+## FREEDOM_CHOICE5        1.00371    0.40531  2.4764 0.0137342 *  
+## FREEDOM_CHOICE6        1.89603    0.40113  4.7267 3.289e-06 ***
+## FREEDOM_CHOICE7        2.24556    0.40357  5.5643 5.174e-08 ***
+## FREEDOM_CHOICE8        2.65805    0.47606  5.5835 4.675e-08 ***
+## FREEDOM_CHOICE9        3.68063    0.55919  6.5820 1.658e-10 ***
+## FREEDOM_CHOICE10       3.39775    0.61403  5.5336 6.082e-08 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
 <div id="odds-ratios-with-robust-confidence-intervals" class="section level3">
 <h3>Odds Ratios with robust confidence intervals</h3>
-<pre class="r"><code>#robust_sr &lt;- sqrt(diag( sandwich::vcovHC(fit.m, type = &quot;HC0&quot;) ))
-#y_or &lt;- exp(coef(fit.m))
-#robust_or &lt;- cbind(coef_t, y_or, LL=exp(coef(fit.m) - 1.96 * robust_sr), UL = exp(coef(fit.m) + 1.96 * robust_sr))
+<pre class="r"><code>robust_sr &lt;- sqrt(diag( sandwich::vcovHC(fit.m, type = &quot;HC0&quot;) ))
+y_or &lt;- exp(coef(fit.m))
+robust_or &lt;- suppressWarnings(
+                cbind(coef_t, y_or, 
+                   LL = exp(coef(fit.m) - 1.96 * robust_sr), 
+                   UL = exp(coef(fit.m) + 1.96 * robust_sr)))
 
-#robust_or</code></pre>
-</div>
-<div id="test-for-proportional-odds-assumption" class="section level3">
-<h3>Test for Proportional Odds assumption</h3>
-<pre class="r"><code>suppressWarnings(brant::brant(fit.m))</code></pre>
-<pre><code>## ---------------------------------------------------- 
-## Test for     X2  df  probability 
-## ---------------------------------------------------- 
-## Omnibus          5928.51 120 0
-## SEXFemale        27.11   8   0
-## ETHNICITYChhetri 2.2 8   0.97
-## ETHNICITYDalit-Others    2.17    8   0.98
-## ETHNICITYGurung-Magar    2.86    8   0.94
-## ETHNICITYNewar       5.42    8   0.71
-## ETHNICITYTamang  1.9 8   0.98
-## FREEDOM_CHOICE2  19.35   8   0.01
-## FREEDOM_CHOICE3  9.99    8   0.27
-## FREEDOM_CHOICE4  10.65   8   0.22
-## FREEDOM_CHOICE5  10.2    8   0.25
-## FREEDOM_CHOICE6  27.36   8   0
-## FREEDOM_CHOICE7  25.44   8   0
-## FREEDOM_CHOICE8  13.19   8   0.11
-## FREEDOM_CHOICE9  4.92    8   0.77
-## FREEDOM_CHOICE10 12.01   8   0.15
-## ---------------------------------------------------- 
-## 
-## H0: Parallel Regression Assumption holds</code></pre>
-<pre><code>##                                X2  df  probability
-## Omnibus               5928.509021 120 0.0000000000
-## SEXFemale               27.112382   8 0.0006760777
-## ETHNICITYChhetri         2.199557   8 0.9742745286
-## ETHNICITYDalit-Others    2.166315   8 0.9754837970
-## ETHNICITYGurung-Magar    2.864757   8 0.9425557787
-## ETHNICITYNewar           5.419212   8 0.7119732074
-## ETHNICITYTamang          1.898275   8 0.9839731742
-## FREEDOM_CHOICE2         19.347883   8 0.0131058967
-## FREEDOM_CHOICE3          9.988154   8 0.2658583091
-## FREEDOM_CHOICE4         10.648955   8 0.2223939392
-## FREEDOM_CHOICE5         10.203099   8 0.2510594492
-## FREEDOM_CHOICE6         27.361064   8 0.0006123065
-## FREEDOM_CHOICE7         25.436778   8 0.0013104830
-## FREEDOM_CHOICE8         13.187097   8 0.1055722918
-## FREEDOM_CHOICE9          4.919087   8 0.7661881672
-## FREEDOM_CHOICE10        12.009860   8 0.1507645135</code></pre>
+knitr::kable(format(as.data.frame(robust_or), digits=3), align=&quot;lllllll&quot;)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">Estimate</th>
+<th align="left">Std. Error</th>
+<th align="center">t value</th>
+<th align="left">Pr(&gt;|t|)</th>
+<th align="left">y_or</th>
+<th align="left">LL</th>
+<th align="left">UL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SEXFemale</td>
+<td align="left">-0.385</td>
+<td align="left">0.192</td>
+<td align="center">-2.005</td>
+<td align="left">4.57e-02</td>
+<td align="left">0.680</td>
+<td align="left">0.4670</td>
+<td align="left">0.991</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYChhetri</td>
+<td align="left">-0.427</td>
+<td align="left">0.379</td>
+<td align="center">-1.127</td>
+<td align="left">2.61e-01</td>
+<td align="left">0.652</td>
+<td align="left">0.3104</td>
+<td align="left">1.371</td>
+</tr>
+<tr class="odd">
+<td>ETHNICITYDalit-Others</td>
+<td align="left">-0.585</td>
+<td align="left">0.366</td>
+<td align="center">-1.598</td>
+<td align="left">1.11e-01</td>
+<td align="left">0.557</td>
+<td align="left">0.2716</td>
+<td align="left">1.142</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYGurung-Magar</td>
+<td align="left">-0.852</td>
+<td align="left">0.342</td>
+<td align="center">-2.492</td>
+<td align="left">1.32e-02</td>
+<td align="left">0.427</td>
+<td align="left">0.2182</td>
+<td align="left">0.834</td>
+</tr>
+<tr class="odd">
+<td>ETHNICITYNewar</td>
+<td align="left">-0.617</td>
+<td align="left">0.393</td>
+<td align="center">-1.570</td>
+<td align="left">1.17e-01</td>
+<td align="left">0.539</td>
+<td align="left">0.2497</td>
+<td align="left">1.165</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYTamang</td>
+<td align="left">-1.290</td>
+<td align="left">0.338</td>
+<td align="center">-3.818</td>
+<td align="left">1.59e-04</td>
+<td align="left">0.275</td>
+<td align="left">0.1419</td>
+<td align="left">0.534</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE2</td>
+<td align="left">1.090</td>
+<td align="left">2.140</td>
+<td align="center">0.509</td>
+<td align="left">6.11e-01</td>
+<td align="left">2.973</td>
+<td align="left">0.0448</td>
+<td align="left">197.285</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE3</td>
+<td align="left">0.901</td>
+<td align="left">0.533</td>
+<td align="center">1.693</td>
+<td align="left">9.14e-02</td>
+<td align="left">2.463</td>
+<td align="left">0.8672</td>
+<td align="left">6.996</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE4</td>
+<td align="left">0.842</td>
+<td align="left">0.489</td>
+<td align="center">1.720</td>
+<td align="left">8.62e-02</td>
+<td align="left">2.321</td>
+<td align="left">0.8893</td>
+<td align="left">6.059</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE5</td>
+<td align="left">1.004</td>
+<td align="left">0.405</td>
+<td align="center">2.476</td>
+<td align="left">1.37e-02</td>
+<td align="left">2.728</td>
+<td align="left">1.2328</td>
+<td align="left">6.038</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE6</td>
+<td align="left">1.896</td>
+<td align="left">0.401</td>
+<td align="center">4.727</td>
+<td align="left">3.29e-06</td>
+<td align="left">6.659</td>
+<td align="left">3.0338</td>
+<td align="left">14.618</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE7</td>
+<td align="left">2.246</td>
+<td align="left">0.404</td>
+<td align="center">5.564</td>
+<td align="left">5.17e-08</td>
+<td align="left">9.446</td>
+<td align="left">4.2827</td>
+<td align="left">20.833</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE8</td>
+<td align="left">2.658</td>
+<td align="left">0.476</td>
+<td align="center">5.583</td>
+<td align="left">4.68e-08</td>
+<td align="left">14.268</td>
+<td align="left">5.6124</td>
+<td align="left">36.275</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE9</td>
+<td align="left">3.681</td>
+<td align="left">0.559</td>
+<td align="center">6.582</td>
+<td align="left">1.66e-10</td>
+<td align="left">39.671</td>
+<td align="left">13.2582</td>
+<td align="left">118.705</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE10</td>
+<td align="left">3.398</td>
+<td align="left">0.614</td>
+<td align="center">5.534</td>
+<td align="left">6.08e-08</td>
+<td align="left">29.897</td>
+<td align="left">8.9734</td>
+<td align="left">99.608</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="bootstrapping-of-odds-ratio-or-with-95-ci-typebca-or-expcoef" class="section level3">
 <h3>Bootstrapping of Odds ratio (OR) with 95% CI (Type=bca): OR = exp(coef)</h3>
 <pre class="r"><code>or_boot &lt;- suppressWarnings(car::Boot(fit.m, f = function(fit.m) exp(coef(fit.m)), R=1000))
-df.or_boot &lt;- format(as.data.frame(confint(or_boot, type=&quot;bca&quot;)), digits=3, scientific=FALSE)
+s_or_boot &lt;- summary(or_boot)
 
-knitr::kable(df.or_boot, align=&quot;ll&quot;)</code></pre>
+knitr::kable(format(as.data.frame(s_or_boot), digits=3), align=&quot;lllll&quot;)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">R</th>
+<th align="left">original</th>
+<th align="left">bootBias</th>
+<th align="left">bootSE</th>
+<th align="left">bootMed</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SEXFemale</td>
+<td align="left">1000</td>
+<td align="left">0.680</td>
+<td align="left">1.43e-02</td>
+<td align="left">1.38e-01</td>
+<td align="left">0.682</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYChhetri</td>
+<td align="left">1000</td>
+<td align="left">0.652</td>
+<td align="left">3.80e-02</td>
+<td align="left">2.87e-01</td>
+<td align="left">0.634</td>
+</tr>
+<tr class="odd">
+<td>ETHNICITYDalit-Others</td>
+<td align="left">1000</td>
+<td align="left">0.557</td>
+<td align="left">3.90e-02</td>
+<td align="left">2.41e-01</td>
+<td align="left">0.549</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYGurung-Magar</td>
+<td align="left">1000</td>
+<td align="left">0.427</td>
+<td align="left">7.65e-03</td>
+<td align="left">1.63e-01</td>
+<td align="left">0.409</td>
+</tr>
+<tr class="odd">
+<td>ETHNICITYNewar</td>
+<td align="left">1000</td>
+<td align="left">0.539</td>
+<td align="left">3.48e-02</td>
+<td align="left">2.56e-01</td>
+<td align="left">0.519</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYTamang</td>
+<td align="left">1000</td>
+<td align="left">0.275</td>
+<td align="left">4.77e-03</td>
+<td align="left">9.95e-02</td>
+<td align="left">0.270</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE2</td>
+<td align="left">1000</td>
+<td align="left">2.973</td>
+<td align="left">7.29e+05</td>
+<td align="left">2.26e+07</td>
+<td align="left">2.980</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE3</td>
+<td align="left">1000</td>
+<td align="left">2.463</td>
+<td align="left">4.84e-01</td>
+<td align="left">1.80e+00</td>
+<td align="left">2.547</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE4</td>
+<td align="left">1000</td>
+<td align="left">2.321</td>
+<td align="left">4.63e-01</td>
+<td align="left">1.62e+00</td>
+<td align="left">2.377</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE5</td>
+<td align="left">1000</td>
+<td align="left">2.728</td>
+<td align="left">4.36e-01</td>
+<td align="left">1.46e+00</td>
+<td align="left">2.972</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE6</td>
+<td align="left">1000</td>
+<td align="left">6.659</td>
+<td align="left">1.22e+00</td>
+<td align="left">3.59e+00</td>
+<td align="left">7.217</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE7</td>
+<td align="left">1000</td>
+<td align="left">9.446</td>
+<td align="left">1.78e+00</td>
+<td align="left">5.10e+00</td>
+<td align="left">10.426</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE8</td>
+<td align="left">1000</td>
+<td align="left">14.268</td>
+<td align="left">3.66e+00</td>
+<td align="left">9.79e+00</td>
+<td align="left">15.842</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE9</td>
+<td align="left">1000</td>
+<td align="left">39.671</td>
+<td align="left">1.71e+01</td>
+<td align="left">3.98e+01</td>
+<td align="left">46.851</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE10</td>
+<td align="left">1000</td>
+<td align="left">29.897</td>
+<td align="left">1.34e+01</td>
+<td align="left">3.40e+01</td>
+<td align="left">34.667</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df.or_boot &lt;- format(as.data.frame(confint(or_boot, type=&quot;bca&quot;)), digits=3, scientific=FALSE)
+
+knitr::kable(format(df.or_boot, digits=3), align=&quot;ll&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -543,78 +806,78 @@ knitr::kable(df.or_boot, align=&quot;ll&quot;)</code></pre>
 <tbody>
 <tr class="odd">
 <td>SEXFemale</td>
-<td align="left">0.4525</td>
-<td align="left">0.987</td>
+<td align="left">0.4502</td>
+<td align="left">1.003</td>
 </tr>
 <tr class="even">
 <td>ETHNICITYChhetri</td>
-<td align="left">0.3140</td>
-<td align="left">1.497</td>
+<td align="left">0.3080</td>
+<td align="left">1.485</td>
 </tr>
 <tr class="odd">
 <td>ETHNICITYDalit-Others</td>
-<td align="left">0.2642</td>
-<td align="left">1.195</td>
+<td align="left">0.2518</td>
+<td align="left">1.203</td>
 </tr>
 <tr class="even">
 <td>ETHNICITYGurung-Magar</td>
-<td align="left">0.2250</td>
-<td align="left">0.927</td>
+<td align="left">0.2094</td>
+<td align="left">0.934</td>
 </tr>
 <tr class="odd">
 <td>ETHNICITYNewar</td>
-<td align="left">0.2457</td>
-<td align="left">1.349</td>
+<td align="left">0.2514</td>
+<td align="left">1.331</td>
 </tr>
 <tr class="even">
 <td>ETHNICITYTamang</td>
-<td align="left">0.1390</td>
-<td align="left">0.557</td>
+<td align="left">0.1292</td>
+<td align="left">0.537</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE2</td>
-<td align="left">0.0816</td>
-<td align="left">72.415</td>
+<td align="left">0.0835</td>
+<td align="left">83.068</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE3</td>
-<td align="left">0.7823</td>
-<td align="left">7.679</td>
+<td align="left">0.7125</td>
+<td align="left">6.867</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE4</td>
-<td align="left">0.8132</td>
-<td align="left">6.116</td>
+<td align="left">0.7625</td>
+<td align="left">6.543</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE5</td>
-<td align="left">1.1142</td>
-<td align="left">5.969</td>
+<td align="left">0.9756</td>
+<td align="left">5.770</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE6</td>
-<td align="left">2.4056</td>
-<td align="left">13.231</td>
+<td align="left">2.4331</td>
+<td align="left">13.875</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE7</td>
-<td align="left">3.4040</td>
-<td align="left">18.097</td>
+<td align="left">3.5032</td>
+<td align="left">19.723</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE8</td>
-<td align="left">4.2448</td>
-<td align="left">35.775</td>
+<td align="left">4.4554</td>
+<td align="left">32.667</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE9</td>
-<td align="left">11.9060</td>
-<td align="left">112.475</td>
+<td align="left">9.7238</td>
+<td align="left">109.486</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE10</td>
-<td align="left">8.4711</td>
-<td align="left">97.571</td>
+<td align="left">7.5990</td>
+<td align="left">89.168</td>
 </tr>
 </tbody>
 </table>
@@ -622,9 +885,146 @@ knitr::kable(df.or_boot, align=&quot;ll&quot;)</code></pre>
 <div id="bootstrapping-for-coeffcients-with-95-ci-type-bca" class="section level3">
 <h3>Bootstrapping for Coeffcients with 95% CI (Type= bca)</h3>
 <pre class="r"><code>beta_boot &lt;- suppressWarnings(car::Boot(fit.m, R=1000))
-df.beta_boot &lt;- format(as.data.frame(confint(beta_boot, type=&quot;bca&quot;)), digits=3, scientific=FALSE)
+s_beta_boot &lt;- summary(beta_boot)
 
-knitr::kable(df.beta_boot, align=&quot;ll&quot;)</code></pre>
+knitr::kable(format(as.data.frame(s_beta_boot), digits=3), align=&quot;lllll&quot;)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">R</th>
+<th align="left">original</th>
+<th align="left">bootBias</th>
+<th align="left">bootSE</th>
+<th align="left">bootMed</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SEXFemale</td>
+<td align="left">1000</td>
+<td align="left">-0.385</td>
+<td align="left">-0.004708</td>
+<td align="left">0.201</td>
+<td align="left">-0.391</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYChhetri</td>
+<td align="left">1000</td>
+<td align="left">-0.427</td>
+<td align="left">-0.021546</td>
+<td align="left">0.400</td>
+<td align="left">-0.457</td>
+</tr>
+<tr class="odd">
+<td>ETHNICITYDalit-Others</td>
+<td align="left">1000</td>
+<td align="left">-0.585</td>
+<td align="left">0.000599</td>
+<td align="left">0.394</td>
+<td align="left">-0.570</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYGurung-Magar</td>
+<td align="left">1000</td>
+<td align="left">-0.852</td>
+<td align="left">-0.036172</td>
+<td align="left">0.356</td>
+<td align="left">-0.882</td>
+</tr>
+<tr class="odd">
+<td>ETHNICITYNewar</td>
+<td align="left">1000</td>
+<td align="left">-0.617</td>
+<td align="left">-0.019968</td>
+<td align="left">0.411</td>
+<td align="left">-0.628</td>
+</tr>
+<tr class="even">
+<td>ETHNICITYTamang</td>
+<td align="left">1000</td>
+<td align="left">-1.290</td>
+<td align="left">-0.032579</td>
+<td align="left">0.352</td>
+<td align="left">-1.317</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE2</td>
+<td align="left">1000</td>
+<td align="left">1.090</td>
+<td align="left">-0.185943</td>
+<td align="left">1.959</td>
+<td align="left">1.064</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE3</td>
+<td align="left">1000</td>
+<td align="left">0.901</td>
+<td align="left">0.002864</td>
+<td align="left">0.560</td>
+<td align="left">0.899</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE4</td>
+<td align="left">1000</td>
+<td align="left">0.842</td>
+<td align="left">0.023612</td>
+<td align="left">0.524</td>
+<td align="left">0.873</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE5</td>
+<td align="left">1000</td>
+<td align="left">1.004</td>
+<td align="left">0.032738</td>
+<td align="left">0.437</td>
+<td align="left">1.047</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE6</td>
+<td align="left">1000</td>
+<td align="left">1.896</td>
+<td align="left">0.055012</td>
+<td align="left">0.426</td>
+<td align="left">1.948</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE7</td>
+<td align="left">1000</td>
+<td align="left">2.246</td>
+<td align="left">0.069677</td>
+<td align="left">0.434</td>
+<td align="left">2.317</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE8</td>
+<td align="left">1000</td>
+<td align="left">2.658</td>
+<td align="left">0.086681</td>
+<td align="left">0.520</td>
+<td align="left">2.771</td>
+</tr>
+<tr class="even">
+<td>FREEDOM_CHOICE9</td>
+<td align="left">1000</td>
+<td align="left">3.681</td>
+<td align="left">0.123358</td>
+<td align="left">0.571</td>
+<td align="left">3.807</td>
+</tr>
+<tr class="odd">
+<td>FREEDOM_CHOICE10</td>
+<td align="left">1000</td>
+<td align="left">3.398</td>
+<td align="left">0.080183</td>
+<td align="left">0.655</td>
+<td align="left">3.470</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df.beta_boot &lt;- format(as.data.frame(confint(beta_boot, type=&quot;bca&quot;)), digits=3, scientific=FALSE)
+
+knitr::kable(format(df.beta_boot, digits=3), align=&quot;ll&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -636,78 +1036,78 @@ knitr::kable(df.beta_boot, align=&quot;ll&quot;)</code></pre>
 <tbody>
 <tr class="odd">
 <td>SEXFemale</td>
-<td align="left">-0.7711</td>
-<td align="left">0.0295</td>
+<td align="left">-0.7621</td>
+<td align="left">0.0384</td>
 </tr>
 <tr class="even">
 <td>ETHNICITYChhetri</td>
-<td align="left">-1.2239</td>
-<td align="left">0.3976</td>
+<td align="left">-1.2179</td>
+<td align="left">0.3338</td>
 </tr>
 <tr class="odd">
 <td>ETHNICITYDalit-Others</td>
-<td align="left">-1.3201</td>
-<td align="left">0.1699</td>
+<td align="left">-1.3857</td>
+<td align="left">0.1650</td>
 </tr>
 <tr class="even">
 <td>ETHNICITYGurung-Magar</td>
-<td align="left">-1.5219</td>
-<td align="left">-0.1315</td>
+<td align="left">-1.5481</td>
+<td align="left">-0.1514</td>
 </tr>
 <tr class="odd">
 <td>ETHNICITYNewar</td>
-<td align="left">-1.3703</td>
-<td align="left">0.3227</td>
+<td align="left">-1.3934</td>
+<td align="left">0.2200</td>
 </tr>
 <tr class="even">
 <td>ETHNICITYTamang</td>
-<td align="left">-1.9154</td>
-<td align="left">-0.5093</td>
+<td align="left">-1.9356</td>
+<td align="left">-0.5123</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE2</td>
-<td align="left">-2.3139</td>
-<td align="left">4.2416</td>
+<td align="left">-2.9527</td>
+<td align="left">4.1315</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE3</td>
-<td align="left">-0.3699</td>
-<td align="left">2.0411</td>
+<td align="left">-0.2536</td>
+<td align="left">1.9668</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE4</td>
-<td align="left">-0.2426</td>
-<td align="left">1.7779</td>
+<td align="left">-0.3161</td>
+<td align="left">1.7963</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE5</td>
-<td align="left">-0.0339</td>
-<td align="left">1.7958</td>
+<td align="left">0.0177</td>
+<td align="left">1.7636</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE6</td>
-<td align="left">0.7904</td>
-<td align="left">2.6330</td>
+<td align="left">0.9198</td>
+<td align="left">2.6667</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE7</td>
-<td align="left">1.2287</td>
-<td align="left">3.0109</td>
+<td align="left">1.2316</td>
+<td align="left">2.9808</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE8</td>
-<td align="left">1.4834</td>
-<td align="left">3.5825</td>
+<td align="left">1.4718</td>
+<td align="left">3.5358</td>
 </tr>
 <tr class="even">
 <td>FREEDOM_CHOICE9</td>
-<td align="left">2.4349</td>
-<td align="left">4.8324</td>
+<td align="left">2.4177</td>
+<td align="left">4.7021</td>
 </tr>
 <tr class="odd">
 <td>FREEDOM_CHOICE10</td>
-<td align="left">2.0256</td>
-<td align="left">4.5704</td>
+<td align="left">1.8909</td>
+<td align="left">4.5906</td>
 </tr>
 </tbody>
 </table>
@@ -762,7 +1162,7 @@ plotEffect &lt;- function(ef.obj){
     return(p)
 }</code></pre>
 <pre class="r"><code>plotEffect(ef.obj=ef1)</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-18-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p></br></br></p>
 </div>
 <div id="happinesssatistfaction-level-for-freedom-of-choice-by-sex-and-ethnicity" class="section level3">
@@ -818,7 +1218,7 @@ plotEffect_MultiVar &lt;- function(ef.obj){
     return(p)
 }</code></pre>
 <pre class="r"><code>plotEffect_MultiVar(ef.obj=ef2)</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-20-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-21-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p></br></br></p>
 <pre class="r"><code>ef3 &lt;- effects::Effect(focal.predictors=&quot;FREEDOM_CHOICE&quot;, mod=fit.m, 
                        xlevels=list(FREEDOM_CHOICE = 1:10, 2))
@@ -877,7 +1277,7 @@ plotProbEffect &lt;- function(ef.obj){
     return(p)
 }</code></pre>
 <pre class="r"><code>plotProbEffect(ef.obj=ef3)</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-23-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-24-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p></br></br></p>
 </div>
 <div id="robustness-check-for-proportional-odds-assumption" class="section level3">
