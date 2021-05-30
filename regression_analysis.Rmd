@@ -3,7 +3,7 @@ title: "Regression Analysis: Happiness and its Potential Predictors"
 output: html_document
 
 knit: (function(input_file, encoding) {
-  out_dir <- '_site';
+  out_dir <- 'docs';
   rmarkdown::render(input_file,
  encoding=encoding,
  output_file=file.path(dirname(input_file), out_dir, 'regression_analysis.html'))})
@@ -143,9 +143,12 @@ robust_or <- suppressWarnings(
 knitr::kable(format(as.data.frame(robust_or), digits=3), align="lllllll")
 ```
 
-
-### Bootstrapping of Odds ratio (OR) with 95% CI (Type=bca): OR = exp(coef)
+### Bootstrapping of Odds ratio with confidence intervals
 ```{r}
+# FIT ORDERED LOGISTIC REGRESSION ---
+fit.m <- MASS::polr(SATISFACTION_LEVEL ~ SEX+ETHNICITY+FREEDOM_CHOICE, data=dat, Hess=TRUE, method="logistic")
+
+# BOOTSTRAPPING
 or_boot <- suppressWarnings(car::Boot(fit.m, f = function(fit.m) exp(coef(fit.m)), R=1000))
 s_or_boot <- summary(or_boot)
 

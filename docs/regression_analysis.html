@@ -13,25 +13,38 @@
 
 <title>Regression Analysis: Happiness and its Potential Predictors</title>
 
-<script src="site_libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -44,32 +57,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -79,10 +67,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -99,40 +83,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -160,7 +117,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -172,7 +129,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -183,10 +140,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -198,7 +168,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -300,7 +269,7 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -378,7 +347,7 @@ summary_table_var &lt;- as.data.frame(cbind(summary_table[1:nrow(tbl_oddratio),]
 rmarkdown::paged_table(format(summary_table_var, digits=3), options=list(rows.print=10))  </code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Value"],"name":[1],"type":["S3: AsIs"],"align":["right"]},{"label":["Std. Error"],"name":[2],"type":["S3: AsIs"],"align":["right"]},{"label":["t value"],"name":[3],"type":["S3: AsIs"],"align":["right"]},{"label":["p value"],"name":[4],"type":["S3: AsIs"],"align":["right"]},{"label":["OddRatio"],"name":[5],"type":["S3: AsIs"],"align":["right"]},{"label":["2.5 %"],"name":[6],"type":["S3: AsIs"],"align":["right"]},{"label":["97.5 %"],"name":[7],"type":["S3: AsIs"],"align":["right"]}],"data":[{"1":"-0.54710","2":"0.24472","3":"-2.23564","4":"0.0254","5":"0.579","6":"0.3572","7":"0.933","_rn_":"SEXFemale"},{"1":"-0.46027","2":"0.40849","3":"-1.12677","4":"0.2598","5":"0.631","6":"0.2823","7":"1.404","_rn_":"ETHNICITYChhetri"},{"1":"-0.74168","2":"0.43252","3":"-1.71479","4":"0.0864","5":"0.476","6":"0.2028","7":"1.108","_rn_":"ETHNICITYDalit-Others"},{"1":"-0.85447","2":"0.37642","3":"-2.27001","4":"0.0232","5":"0.426","6":"0.2024","7":"0.888","_rn_":"ETHNICITYGurung-Magar"},{"1":"-0.80109","2":"0.44384","3":"-1.80489","4":"0.0711","5":"0.449","6":"0.1873","7":"1.070","_rn_":"ETHNICITYNewar"},{"1":"-1.49919","2":"0.39294","3":"-3.81536","4":"0.0001","5":"0.223","6":"0.1025","7":"0.480","_rn_":"ETHNICITYTamang"},{"1":"1.07932","2":"0.98991","3":"1.09032","4":"0.2756","5":"2.943","6":"0.4179","7":"19.733","_rn_":"FREEDOM_CHOICE2"},{"1":"1.10502","2":"0.55899","3":"1.97682","4":"0.0481","5":"3.019","6":"1.0048","7":"9.030","_rn_":"FREEDOM_CHOICE3"},{"1":"1.06516","2":"0.46387","3":"2.29626","4":"0.0217","5":"2.901","6":"1.1710","7":"7.234","_rn_":"FREEDOM_CHOICE4"},{"1":"1.23205","2":"0.41766","3":"2.94990","4":"0.0032","5":"3.428","6":"1.5139","7":"7.802","_rn_":"FREEDOM_CHOICE5"},{"1":"2.12430","2":"0.43241","3":"4.91265","4":"0.0000","5":"8.367","6":"3.6057","7":"19.689","_rn_":"FREEDOM_CHOICE6"},{"1":"2.54088","2":"0.43753","3":"5.80727","4":"0.0000","5":"12.691","6":"5.4148","7":"30.165","_rn_":"FREEDOM_CHOICE7"},{"1":"2.85252","2":"0.52479","3":"5.43554","4":"0.0000","5":"17.331","6":"6.2197","7":"48.890","_rn_":"FREEDOM_CHOICE8"},{"1":"3.84806","2":"0.56704","3":"6.78626","4":"0.0000","5":"46.902","6":"15.6620","7":"145.663","_rn_":"FREEDOM_CHOICE9"},{"1":"3.53091","2":"0.48644","3":"7.25871","4":"0.0000","5":"34.155","6":"13.2864","7":"89.651","_rn_":"FREEDOM_CHOICE10"},{"1":"0.28630","2":"0.28046","3":"1.02079","4":"0.3074","5":"1.331","6":"0.7680","7":"2.308","_rn_":"EDUCATION_LEVELPrimary"},{"1":"0.18583","2":"0.31769","3":"0.58493","4":"0.5586","5":"1.204","6":"0.6458","7":"2.247","_rn_":"EDUCATION_LEVELSecondary"},{"1":"0.00759","2":"0.84202","3":"0.00901","4":"0.9928","5":"1.008","6":"0.1894","7":"5.321","_rn_":"EDUCATION_LEVELUniversity"},{"1":"-0.46840","2":"0.34339","3":"-1.36405","4":"0.1726","5":"0.626","6":"0.3180","7":"1.226","_rn_":"OCCUPATIONBusiness"},{"1":"-0.69809","2":"0.62457","3":"-1.11772","4":"0.2637","5":"0.498","6":"0.1455","7":"1.723","_rn_":"OCCUPATIONGoverment Employee"},{"1":"-0.25998","2":"0.29417","3":"-0.88378","4":"0.3768","5":"0.771","6":"0.4324","7":"1.372","_rn_":"OCCUPATIONLabour"},{"1":"0.12429","2":"1.10899","3":"0.11207","4":"0.9108","5":"1.132","6":"0.1131","7":"11.228","_rn_":"OCCUPATIONTeacher"},{"1":"1.00383","2":"0.65012","3":"1.54407","4":"0.1226","5":"2.729","6":"0.7568","7":"9.755","_rn_":"RECON_COMPLETED40"},{"1":"-0.04740","2":"0.76246","3":"-0.06217","4":"0.9504","5":"0.954","6":"0.2113","7":"4.286","_rn_":"RECON_COMPLETED60"},{"1":"0.23313","2":"0.47299","3":"0.49290","4":"0.6221","5":"1.263","6":"0.4985","7":"3.199","_rn_":"RECON_COMPLETED80"},{"1":"0.54367","2":"0.40972","3":"1.32693","4":"0.1845","5":"1.722","6":"0.7692","7":"3.856","_rn_":"RECON_COMPLETED100"},{"1":"0.38914","2":"0.23814","3":"1.63405","4":"0.1022","5":"1.476","6":"0.9261","7":"2.358","_rn_":"DISTRICTSindhupalchowk"},{"1":"-0.47999","2":"0.37785","3":"-1.27031","4":"0.2040","5":"0.619","6":"0.2938","7":"1.297","_rn_":"INCOME_LEVEL2.5-10K"},{"1":"-0.32210","2":"0.39915","3":"-0.80698","4":"0.4197","5":"0.725","6":"0.3292","7":"1.580","_rn_":"INCOME_LEVEL10-20K"},{"1":"-0.27204","2":"0.42854","3":"-0.63481","4":"0.5256","5":"0.762","6":"0.3274","7":"1.763","_rn_":"INCOME_LEVEL20-40K"},{"1":"-0.95603","2":"0.72398","3":"-1.32051","4":"0.1867","5":"0.384","6":"0.0901","7":"1.576","_rn_":"INCOME_LEVEL40-60K"},{"1":"-1.55837","2":"1.02219","3":"-1.52454","4":"0.1274","5":"0.210","6":"0.0270","7":"1.616","_rn_":"INCOME_LEVEL60K-Above"},{"1":"-0.00571","2":"0.00882","3":"-0.64697","4":"0.5177","5":"0.994","6":"0.9772","7":"1.012","_rn_":"AGE"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Value"],"name":[1],"type":["I<chr>"],"align":["right"]},{"label":["Std. Error"],"name":[2],"type":["I<chr>"],"align":["right"]},{"label":["t value"],"name":[3],"type":["I<chr>"],"align":["right"]},{"label":["p value"],"name":[4],"type":["I<chr>"],"align":["right"]},{"label":["OddRatio"],"name":[5],"type":["I<chr>"],"align":["right"]},{"label":["2.5 %"],"name":[6],"type":["I<chr>"],"align":["right"]},{"label":["97.5 %"],"name":[7],"type":["I<chr>"],"align":["right"]}],"data":[{"1":"-0.54710","2":"0.24472","3":"-2.23564","4":"0.0254","5":"0.579","6":"0.3572","7":"0.933","_rn_":"SEXFemale"},{"1":"-0.46027","2":"0.40849","3":"-1.12677","4":"0.2598","5":"0.631","6":"0.2823","7":"1.404","_rn_":"ETHNICITYChhetri"},{"1":"-0.74168","2":"0.43252","3":"-1.71479","4":"0.0864","5":"0.476","6":"0.2028","7":"1.108","_rn_":"ETHNICITYDalit-Others"},{"1":"-0.85447","2":"0.37642","3":"-2.27001","4":"0.0232","5":"0.426","6":"0.2024","7":"0.888","_rn_":"ETHNICITYGurung-Magar"},{"1":"-0.80109","2":"0.44384","3":"-1.80489","4":"0.0711","5":"0.449","6":"0.1873","7":"1.070","_rn_":"ETHNICITYNewar"},{"1":"-1.49919","2":"0.39294","3":"-3.81536","4":"0.0001","5":"0.223","6":"0.1025","7":"0.480","_rn_":"ETHNICITYTamang"},{"1":"1.07932","2":"0.98991","3":"1.09032","4":"0.2756","5":"2.943","6":"0.4179","7":"19.733","_rn_":"FREEDOM_CHOICE2"},{"1":"1.10502","2":"0.55899","3":"1.97682","4":"0.0481","5":"3.019","6":"1.0048","7":"9.030","_rn_":"FREEDOM_CHOICE3"},{"1":"1.06516","2":"0.46387","3":"2.29626","4":"0.0217","5":"2.901","6":"1.1710","7":"7.234","_rn_":"FREEDOM_CHOICE4"},{"1":"1.23205","2":"0.41766","3":"2.94990","4":"0.0032","5":"3.428","6":"1.5139","7":"7.802","_rn_":"FREEDOM_CHOICE5"},{"1":"2.12430","2":"0.43241","3":"4.91265","4":"0.0000","5":"8.367","6":"3.6057","7":"19.689","_rn_":"FREEDOM_CHOICE6"},{"1":"2.54088","2":"0.43753","3":"5.80727","4":"0.0000","5":"12.691","6":"5.4148","7":"30.165","_rn_":"FREEDOM_CHOICE7"},{"1":"2.85252","2":"0.52479","3":"5.43554","4":"0.0000","5":"17.331","6":"6.2197","7":"48.890","_rn_":"FREEDOM_CHOICE8"},{"1":"3.84806","2":"0.56704","3":"6.78626","4":"0.0000","5":"46.902","6":"15.6620","7":"145.663","_rn_":"FREEDOM_CHOICE9"},{"1":"3.53091","2":"0.48644","3":"7.25871","4":"0.0000","5":"34.155","6":"13.2864","7":"89.651","_rn_":"FREEDOM_CHOICE10"},{"1":"0.28630","2":"0.28046","3":"1.02079","4":"0.3074","5":"1.331","6":"0.7680","7":"2.308","_rn_":"EDUCATION_LEVELPrimary"},{"1":"0.18583","2":"0.31769","3":"0.58493","4":"0.5586","5":"1.204","6":"0.6458","7":"2.247","_rn_":"EDUCATION_LEVELSecondary"},{"1":"0.00759","2":"0.84202","3":"0.00901","4":"0.9928","5":"1.008","6":"0.1894","7":"5.321","_rn_":"EDUCATION_LEVELUniversity"},{"1":"-0.46840","2":"0.34339","3":"-1.36405","4":"0.1726","5":"0.626","6":"0.3180","7":"1.226","_rn_":"OCCUPATIONBusiness"},{"1":"-0.69809","2":"0.62457","3":"-1.11772","4":"0.2637","5":"0.498","6":"0.1455","7":"1.723","_rn_":"OCCUPATIONGoverment Employee"},{"1":"-0.25998","2":"0.29417","3":"-0.88378","4":"0.3768","5":"0.771","6":"0.4324","7":"1.372","_rn_":"OCCUPATIONLabour"},{"1":"0.12429","2":"1.10899","3":"0.11207","4":"0.9108","5":"1.132","6":"0.1131","7":"11.228","_rn_":"OCCUPATIONTeacher"},{"1":"1.00383","2":"0.65012","3":"1.54407","4":"0.1226","5":"2.729","6":"0.7568","7":"9.755","_rn_":"RECON_COMPLETED40"},{"1":"-0.04740","2":"0.76246","3":"-0.06217","4":"0.9504","5":"0.954","6":"0.2113","7":"4.286","_rn_":"RECON_COMPLETED60"},{"1":"0.23313","2":"0.47299","3":"0.49290","4":"0.6221","5":"1.263","6":"0.4985","7":"3.199","_rn_":"RECON_COMPLETED80"},{"1":"0.54367","2":"0.40972","3":"1.32693","4":"0.1845","5":"1.722","6":"0.7692","7":"3.856","_rn_":"RECON_COMPLETED100"},{"1":"0.38914","2":"0.23814","3":"1.63405","4":"0.1022","5":"1.476","6":"0.9261","7":"2.358","_rn_":"DISTRICTSindhupalchowk"},{"1":"-0.47999","2":"0.37785","3":"-1.27031","4":"0.2040","5":"0.619","6":"0.2938","7":"1.297","_rn_":"INCOME_LEVEL2.5-10K"},{"1":"-0.32210","2":"0.39915","3":"-0.80698","4":"0.4197","5":"0.725","6":"0.3292","7":"1.580","_rn_":"INCOME_LEVEL10-20K"},{"1":"-0.27204","2":"0.42854","3":"-0.63481","4":"0.5256","5":"0.762","6":"0.3274","7":"1.763","_rn_":"INCOME_LEVEL20-40K"},{"1":"-0.95603","2":"0.72398","3":"-1.32051","4":"0.1867","5":"0.384","6":"0.0901","7":"1.576","_rn_":"INCOME_LEVEL40-60K"},{"1":"-1.55837","2":"1.02219","3":"-1.52454","4":"0.1274","5":"0.210","6":"0.0270","7":"1.616","_rn_":"INCOME_LEVEL60K-Above"},{"1":"-0.00571","2":"0.00882","3":"-0.64697","4":"0.5177","5":"0.994","6":"0.9772","7":"1.012","_rn_":"AGE"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -422,7 +391,7 @@ summary_table_var &lt;- as.data.frame(cbind(summary_table[1:nrow(tbl_oddratio),]
 rmarkdown::paged_table(format(summary_table_var, digits=3), options=list(rows.print=10))  </code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Value"],"name":[1],"type":["S3: AsIs"],"align":["right"]},{"label":["Std. Error"],"name":[2],"type":["S3: AsIs"],"align":["right"]},{"label":["t value"],"name":[3],"type":["S3: AsIs"],"align":["right"]},{"label":["p value"],"name":[4],"type":["S3: AsIs"],"align":["right"]},{"label":["OddRatio"],"name":[5],"type":["S3: AsIs"],"align":["right"]},{"label":["2.5 %"],"name":[6],"type":["S3: AsIs"],"align":["right"]},{"label":["97.5 %"],"name":[7],"type":["S3: AsIs"],"align":["right"]}],"data":[{"1":"-0.385","2":"0.193","3":"-2.00","4":"0.0458","5":"0.680","6":"0.466","7":"0.992","_rn_":"SEXFemale"},{"1":"-0.427","2":"0.384","3":"-1.11","4":"0.2658","5":"0.652","6":"0.307","7":"1.384","_rn_":"ETHNICITYChhetri"},{"1":"-0.585","2":"0.387","3":"-1.51","4":"0.1306","5":"0.557","6":"0.259","7":"1.187","_rn_":"ETHNICITYDalit-Others"},{"1":"-0.852","2":"0.348","3":"-2.45","4":"0.0143","5":"0.427","6":"0.215","7":"0.841","_rn_":"ETHNICITYGurung-Magar"},{"1":"-0.617","2":"0.412","3":"-1.50","4":"0.1338","5":"0.539","6":"0.240","7":"1.208","_rn_":"ETHNICITYNewar"},{"1":"-1.290","2":"0.338","3":"-3.81","4":"0.0001","5":"0.275","6":"0.141","7":"0.532","_rn_":"ETHNICITYTamang"},{"1":"1.090","2":"1.000","3":"1.09","4":"0.2759","5":"2.973","6":"0.404","7":"19.431","_rn_":"FREEDOM_CHOICE2"},{"1":"0.901","2":"0.515","3":"1.75","4":"0.0801","5":"2.463","6":"0.894","7":"6.764","_rn_":"FREEDOM_CHOICE3"},{"1":"0.842","2":"0.440","3":"1.91","4":"0.0557","5":"2.321","6":"0.981","7":"5.520","_rn_":"FREEDOM_CHOICE4"},{"1":"1.004","2":"0.392","3":"2.56","4":"0.0104","5":"2.728","6":"1.269","7":"5.911","_rn_":"FREEDOM_CHOICE5"},{"1":"1.896","2":"0.404","3":"4.69","4":"0.0000","5":"6.659","6":"3.033","7":"14.823","_rn_":"FREEDOM_CHOICE6"},{"1":"2.246","2":"0.407","3":"5.52","4":"0.0000","5":"9.446","6":"4.283","7":"21.131","_rn_":"FREEDOM_CHOICE7"},{"1":"2.658","2":"0.501","3":"5.31","4":"0.0000","5":"14.268","6":"5.365","7":"38.364","_rn_":"FREEDOM_CHOICE8"},{"1":"3.681","2":"0.536","3":"6.86","4":"0.0000","5":"39.671","6":"14.029","7":"115.644","_rn_":"FREEDOM_CHOICE9"},{"1":"3.398","2":"0.468","3":"7.26","4":"0.0000","5":"29.897","6":"12.051","7":"75.683","_rn_":"FREEDOM_CHOICE10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Value"],"name":[1],"type":["I<chr>"],"align":["right"]},{"label":["Std. Error"],"name":[2],"type":["I<chr>"],"align":["right"]},{"label":["t value"],"name":[3],"type":["I<chr>"],"align":["right"]},{"label":["p value"],"name":[4],"type":["I<chr>"],"align":["right"]},{"label":["OddRatio"],"name":[5],"type":["I<chr>"],"align":["right"]},{"label":["2.5 %"],"name":[6],"type":["I<chr>"],"align":["right"]},{"label":["97.5 %"],"name":[7],"type":["I<chr>"],"align":["right"]}],"data":[{"1":"-0.385","2":"0.193","3":"-2.00","4":"0.0458","5":"0.680","6":"0.466","7":"0.992","_rn_":"SEXFemale"},{"1":"-0.427","2":"0.384","3":"-1.11","4":"0.2658","5":"0.652","6":"0.307","7":"1.384","_rn_":"ETHNICITYChhetri"},{"1":"-0.585","2":"0.387","3":"-1.51","4":"0.1306","5":"0.557","6":"0.259","7":"1.187","_rn_":"ETHNICITYDalit-Others"},{"1":"-0.852","2":"0.348","3":"-2.45","4":"0.0143","5":"0.427","6":"0.215","7":"0.841","_rn_":"ETHNICITYGurung-Magar"},{"1":"-0.617","2":"0.412","3":"-1.50","4":"0.1338","5":"0.539","6":"0.240","7":"1.208","_rn_":"ETHNICITYNewar"},{"1":"-1.290","2":"0.338","3":"-3.81","4":"0.0001","5":"0.275","6":"0.141","7":"0.532","_rn_":"ETHNICITYTamang"},{"1":"1.090","2":"1.000","3":"1.09","4":"0.2759","5":"2.973","6":"0.404","7":"19.431","_rn_":"FREEDOM_CHOICE2"},{"1":"0.901","2":"0.515","3":"1.75","4":"0.0801","5":"2.463","6":"0.894","7":"6.764","_rn_":"FREEDOM_CHOICE3"},{"1":"0.842","2":"0.440","3":"1.91","4":"0.0557","5":"2.321","6":"0.981","7":"5.520","_rn_":"FREEDOM_CHOICE4"},{"1":"1.004","2":"0.392","3":"2.56","4":"0.0104","5":"2.728","6":"1.269","7":"5.911","_rn_":"FREEDOM_CHOICE5"},{"1":"1.896","2":"0.404","3":"4.69","4":"0.0000","5":"6.659","6":"3.033","7":"14.823","_rn_":"FREEDOM_CHOICE6"},{"1":"2.246","2":"0.407","3":"5.52","4":"0.0000","5":"9.446","6":"4.283","7":"21.131","_rn_":"FREEDOM_CHOICE7"},{"1":"2.658","2":"0.501","3":"5.31","4":"0.0000","5":"14.268","6":"5.365","7":"38.364","_rn_":"FREEDOM_CHOICE8"},{"1":"3.681","2":"0.536","3":"6.86","4":"0.0000","5":"39.671","6":"14.029","7":"115.644","_rn_":"FREEDOM_CHOICE9"},{"1":"3.398","2":"0.468","3":"7.26","4":"0.0000","5":"29.897","6":"12.051","7":"75.683","_rn_":"FREEDOM_CHOICE10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code># SATISFACTION THRESHOLD ---
@@ -488,10 +457,10 @@ knitr::kable(format(as.data.frame(robust_or), digits=3), align=&quot;lllllll&quo
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Estimate</th>
 <th align="left">Std. Error</th>
-<th align="center">t value</th>
+<th align="left">t value</th>
 <th align="left">Pr(&gt;|t|)</th>
 <th align="left">y_or</th>
 <th align="left">LL</th>
@@ -500,150 +469,150 @@ knitr::kable(format(as.data.frame(robust_or), digits=3), align=&quot;lllllll&quo
 </thead>
 <tbody>
 <tr class="odd">
-<td>SEXFemale</td>
+<td align="left">SEXFemale</td>
 <td align="left">-0.385</td>
 <td align="left">0.192</td>
-<td align="center">-2.005</td>
+<td align="left">-2.005</td>
 <td align="left">4.57e-02</td>
 <td align="left">0.680</td>
 <td align="left">0.4670</td>
 <td align="left">0.991</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYChhetri</td>
+<td align="left">ETHNICITYChhetri</td>
 <td align="left">-0.427</td>
 <td align="left">0.379</td>
-<td align="center">-1.127</td>
+<td align="left">-1.127</td>
 <td align="left">2.61e-01</td>
 <td align="left">0.652</td>
 <td align="left">0.3104</td>
 <td align="left">1.371</td>
 </tr>
 <tr class="odd">
-<td>ETHNICITYDalit-Others</td>
+<td align="left">ETHNICITYDalit-Others</td>
 <td align="left">-0.585</td>
 <td align="left">0.366</td>
-<td align="center">-1.598</td>
+<td align="left">-1.598</td>
 <td align="left">1.11e-01</td>
 <td align="left">0.557</td>
 <td align="left">0.2716</td>
 <td align="left">1.142</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYGurung-Magar</td>
+<td align="left">ETHNICITYGurung-Magar</td>
 <td align="left">-0.852</td>
 <td align="left">0.342</td>
-<td align="center">-2.492</td>
+<td align="left">-2.492</td>
 <td align="left">1.32e-02</td>
 <td align="left">0.427</td>
 <td align="left">0.2182</td>
 <td align="left">0.834</td>
 </tr>
 <tr class="odd">
-<td>ETHNICITYNewar</td>
+<td align="left">ETHNICITYNewar</td>
 <td align="left">-0.617</td>
 <td align="left">0.393</td>
-<td align="center">-1.570</td>
+<td align="left">-1.570</td>
 <td align="left">1.17e-01</td>
 <td align="left">0.539</td>
 <td align="left">0.2497</td>
 <td align="left">1.165</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYTamang</td>
+<td align="left">ETHNICITYTamang</td>
 <td align="left">-1.290</td>
 <td align="left">0.338</td>
-<td align="center">-3.818</td>
+<td align="left">-3.818</td>
 <td align="left">1.59e-04</td>
 <td align="left">0.275</td>
 <td align="left">0.1419</td>
 <td align="left">0.534</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE2</td>
+<td align="left">FREEDOM_CHOICE2</td>
 <td align="left">1.090</td>
 <td align="left">2.140</td>
-<td align="center">0.509</td>
+<td align="left">0.509</td>
 <td align="left">6.11e-01</td>
 <td align="left">2.973</td>
 <td align="left">0.0448</td>
 <td align="left">197.285</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE3</td>
+<td align="left">FREEDOM_CHOICE3</td>
 <td align="left">0.901</td>
 <td align="left">0.533</td>
-<td align="center">1.693</td>
+<td align="left">1.693</td>
 <td align="left">9.14e-02</td>
 <td align="left">2.463</td>
 <td align="left">0.8672</td>
 <td align="left">6.996</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE4</td>
+<td align="left">FREEDOM_CHOICE4</td>
 <td align="left">0.842</td>
 <td align="left">0.489</td>
-<td align="center">1.720</td>
+<td align="left">1.720</td>
 <td align="left">8.62e-02</td>
 <td align="left">2.321</td>
 <td align="left">0.8893</td>
 <td align="left">6.059</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE5</td>
+<td align="left">FREEDOM_CHOICE5</td>
 <td align="left">1.004</td>
 <td align="left">0.405</td>
-<td align="center">2.476</td>
+<td align="left">2.476</td>
 <td align="left">1.37e-02</td>
 <td align="left">2.728</td>
 <td align="left">1.2328</td>
 <td align="left">6.038</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE6</td>
+<td align="left">FREEDOM_CHOICE6</td>
 <td align="left">1.896</td>
 <td align="left">0.401</td>
-<td align="center">4.727</td>
+<td align="left">4.727</td>
 <td align="left">3.29e-06</td>
 <td align="left">6.659</td>
 <td align="left">3.0338</td>
 <td align="left">14.618</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE7</td>
+<td align="left">FREEDOM_CHOICE7</td>
 <td align="left">2.246</td>
 <td align="left">0.404</td>
-<td align="center">5.564</td>
+<td align="left">5.564</td>
 <td align="left">5.17e-08</td>
 <td align="left">9.446</td>
 <td align="left">4.2827</td>
 <td align="left">20.833</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE8</td>
+<td align="left">FREEDOM_CHOICE8</td>
 <td align="left">2.658</td>
 <td align="left">0.476</td>
-<td align="center">5.583</td>
+<td align="left">5.583</td>
 <td align="left">4.68e-08</td>
 <td align="left">14.268</td>
 <td align="left">5.6124</td>
 <td align="left">36.275</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE9</td>
+<td align="left">FREEDOM_CHOICE9</td>
 <td align="left">3.681</td>
 <td align="left">0.559</td>
-<td align="center">6.582</td>
+<td align="left">6.582</td>
 <td align="left">1.66e-10</td>
 <td align="left">39.671</td>
 <td align="left">13.2582</td>
 <td align="left">118.705</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE10</td>
+<td align="left">FREEDOM_CHOICE10</td>
 <td align="left">3.398</td>
 <td align="left">0.614</td>
-<td align="center">5.534</td>
+<td align="left">5.534</td>
 <td align="left">6.08e-08</td>
 <td align="left">29.897</td>
 <td align="left">8.9734</td>
@@ -652,16 +621,20 @@ knitr::kable(format(as.data.frame(robust_or), digits=3), align=&quot;lllllll&quo
 </tbody>
 </table>
 </div>
-<div id="bootstrapping-of-odds-ratio-or-with-95-ci-typebca-or-expcoef" class="section level3">
-<h3>Bootstrapping of Odds ratio (OR) with 95% CI (Type=bca): OR = exp(coef)</h3>
-<pre class="r"><code>or_boot &lt;- suppressWarnings(car::Boot(fit.m, f = function(fit.m) exp(coef(fit.m)), R=1000))
+<div id="bootstrapping-of-odds-ratio-with-confidence-intervals" class="section level3">
+<h3>Bootstrapping of Odds ratio with confidence intervals</h3>
+<pre class="r"><code># FIT ORDERED LOGISTIC REGRESSION ---
+fit.m &lt;- MASS::polr(SATISFACTION_LEVEL ~ SEX+ETHNICITY+FREEDOM_CHOICE, data=dat, Hess=TRUE, method=&quot;logistic&quot;)
+
+# BOOTSTRAPPING
+or_boot &lt;- suppressWarnings(car::Boot(fit.m, f = function(fit.m) exp(coef(fit.m)), R=1000))
 s_or_boot &lt;- summary(or_boot)
 
 knitr::kable(format(as.data.frame(s_or_boot), digits=3), align=&quot;lllll&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">R</th>
 <th align="left">original</th>
 <th align="left">bootBias</th>
@@ -671,124 +644,124 @@ knitr::kable(format(as.data.frame(s_or_boot), digits=3), align=&quot;lllll&quot;
 </thead>
 <tbody>
 <tr class="odd">
-<td>SEXFemale</td>
+<td align="left">SEXFemale</td>
 <td align="left">1000</td>
 <td align="left">0.680</td>
-<td align="left">1.43e-02</td>
-<td align="left">1.38e-01</td>
-<td align="left">0.682</td>
+<td align="left">9.71e-03</td>
+<td align="left">1.37e-01</td>
+<td align="left">0.679</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYChhetri</td>
+<td align="left">ETHNICITYChhetri</td>
 <td align="left">1000</td>
 <td align="left">0.652</td>
-<td align="left">3.80e-02</td>
-<td align="left">2.87e-01</td>
-<td align="left">0.634</td>
+<td align="left">2.47e-02</td>
+<td align="left">2.78e-01</td>
+<td align="left">0.632</td>
 </tr>
 <tr class="odd">
-<td>ETHNICITYDalit-Others</td>
+<td align="left">ETHNICITYDalit-Others</td>
 <td align="left">1000</td>
 <td align="left">0.557</td>
-<td align="left">3.90e-02</td>
-<td align="left">2.41e-01</td>
-<td align="left">0.549</td>
+<td align="left">2.76e-02</td>
+<td align="left">2.35e-01</td>
+<td align="left">0.547</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYGurung-Magar</td>
+<td align="left">ETHNICITYGurung-Magar</td>
 <td align="left">1000</td>
 <td align="left">0.427</td>
-<td align="left">7.65e-03</td>
-<td align="left">1.63e-01</td>
-<td align="left">0.409</td>
+<td align="left">-1.19e-03</td>
+<td align="left">1.52e-01</td>
+<td align="left">0.405</td>
 </tr>
 <tr class="odd">
-<td>ETHNICITYNewar</td>
+<td align="left">ETHNICITYNewar</td>
 <td align="left">1000</td>
 <td align="left">0.539</td>
-<td align="left">3.48e-02</td>
-<td align="left">2.56e-01</td>
-<td align="left">0.519</td>
+<td align="left">2.65e-02</td>
+<td align="left">2.69e-01</td>
+<td align="left">0.515</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYTamang</td>
+<td align="left">ETHNICITYTamang</td>
 <td align="left">1000</td>
 <td align="left">0.275</td>
-<td align="left">4.77e-03</td>
-<td align="left">9.95e-02</td>
-<td align="left">0.270</td>
+<td align="left">-1.37e-03</td>
+<td align="left">9.87e-02</td>
+<td align="left">0.258</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE2</td>
+<td align="left">FREEDOM_CHOICE2</td>
 <td align="left">1000</td>
 <td align="left">2.973</td>
-<td align="left">7.29e+05</td>
-<td align="left">2.26e+07</td>
-<td align="left">2.980</td>
+<td align="left">7.70e+05</td>
+<td align="left">1.91e+07</td>
+<td align="left">2.717</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE3</td>
+<td align="left">FREEDOM_CHOICE3</td>
 <td align="left">1000</td>
 <td align="left">2.463</td>
-<td align="left">4.84e-01</td>
+<td align="left">4.26e-01</td>
 <td align="left">1.80e+00</td>
-<td align="left">2.547</td>
+<td align="left">2.462</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE4</td>
+<td align="left">FREEDOM_CHOICE4</td>
 <td align="left">1000</td>
 <td align="left">2.321</td>
-<td align="left">4.63e-01</td>
-<td align="left">1.62e+00</td>
-<td align="left">2.377</td>
+<td align="left">3.68e-01</td>
+<td align="left">1.48e+00</td>
+<td align="left">2.350</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE5</td>
+<td align="left">FREEDOM_CHOICE5</td>
 <td align="left">1000</td>
 <td align="left">2.728</td>
-<td align="left">4.36e-01</td>
-<td align="left">1.46e+00</td>
-<td align="left">2.972</td>
+<td align="left">3.16e-01</td>
+<td align="left">1.33e+00</td>
+<td align="left">2.769</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE6</td>
+<td align="left">FREEDOM_CHOICE6</td>
 <td align="left">1000</td>
 <td align="left">6.659</td>
-<td align="left">1.22e+00</td>
-<td align="left">3.59e+00</td>
-<td align="left">7.217</td>
+<td align="left">1.05e+00</td>
+<td align="left">3.55e+00</td>
+<td align="left">7.058</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE7</td>
+<td align="left">FREEDOM_CHOICE7</td>
 <td align="left">1000</td>
 <td align="left">9.446</td>
-<td align="left">1.78e+00</td>
-<td align="left">5.10e+00</td>
-<td align="left">10.426</td>
+<td align="left">1.53e+00</td>
+<td align="left">4.88e+00</td>
+<td align="left">10.118</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE8</td>
+<td align="left">FREEDOM_CHOICE8</td>
 <td align="left">1000</td>
 <td align="left">14.268</td>
-<td align="left">3.66e+00</td>
-<td align="left">9.79e+00</td>
-<td align="left">15.842</td>
+<td align="left">2.86e+00</td>
+<td align="left">9.58e+00</td>
+<td align="left">15.034</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE9</td>
+<td align="left">FREEDOM_CHOICE9</td>
 <td align="left">1000</td>
 <td align="left">39.671</td>
-<td align="left">1.71e+01</td>
-<td align="left">3.98e+01</td>
-<td align="left">46.851</td>
+<td align="left">1.44e+01</td>
+<td align="left">3.46e+01</td>
+<td align="left">46.272</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE10</td>
+<td align="left">FREEDOM_CHOICE10</td>
 <td align="left">1000</td>
 <td align="left">29.897</td>
-<td align="left">1.34e+01</td>
-<td align="left">3.40e+01</td>
-<td align="left">34.667</td>
+<td align="left">9.78e+00</td>
+<td align="left">2.83e+01</td>
+<td align="left">31.630</td>
 </tr>
 </tbody>
 </table>
@@ -798,86 +771,86 @@ knitr::kable(format(df.or_boot, digits=3), align=&quot;ll&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">2.5 %</th>
 <th align="left">97.5 %</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>SEXFemale</td>
-<td align="left">0.4502</td>
-<td align="left">1.003</td>
+<td align="left">SEXFemale</td>
+<td align="left">0.454</td>
+<td align="left">0.983</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYChhetri</td>
-<td align="left">0.3080</td>
-<td align="left">1.485</td>
+<td align="left">ETHNICITYChhetri</td>
+<td align="left">0.302</td>
+<td align="left">1.462</td>
 </tr>
 <tr class="odd">
-<td>ETHNICITYDalit-Others</td>
-<td align="left">0.2518</td>
-<td align="left">1.203</td>
+<td align="left">ETHNICITYDalit-Others</td>
+<td align="left">0.254</td>
+<td align="left">1.191</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYGurung-Magar</td>
-<td align="left">0.2094</td>
-<td align="left">0.934</td>
+<td align="left">ETHNICITYGurung-Magar</td>
+<td align="left">0.220</td>
+<td align="left">0.872</td>
 </tr>
 <tr class="odd">
-<td>ETHNICITYNewar</td>
-<td align="left">0.2514</td>
-<td align="left">1.331</td>
+<td align="left">ETHNICITYNewar</td>
+<td align="left">0.256</td>
+<td align="left">1.426</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYTamang</td>
-<td align="left">0.1292</td>
-<td align="left">0.537</td>
+<td align="left">ETHNICITYTamang</td>
+<td align="left">0.139</td>
+<td align="left">0.565</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE2</td>
-<td align="left">0.0835</td>
-<td align="left">83.068</td>
+<td align="left">FREEDOM_CHOICE2</td>
+<td align="left">0.070</td>
+<td align="left">65.464</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE3</td>
-<td align="left">0.7125</td>
-<td align="left">6.867</td>
+<td align="left">FREEDOM_CHOICE3</td>
+<td align="left">0.741</td>
+<td align="left">7.101</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE4</td>
-<td align="left">0.7625</td>
-<td align="left">6.543</td>
+<td align="left">FREEDOM_CHOICE4</td>
+<td align="left">0.789</td>
+<td align="left">6.402</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE5</td>
-<td align="left">0.9756</td>
-<td align="left">5.770</td>
+<td align="left">FREEDOM_CHOICE5</td>
+<td align="left">1.012</td>
+<td align="left">6.065</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE6</td>
-<td align="left">2.4331</td>
-<td align="left">13.875</td>
+<td align="left">FREEDOM_CHOICE6</td>
+<td align="left">2.460</td>
+<td align="left">13.871</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE7</td>
-<td align="left">3.5032</td>
-<td align="left">19.723</td>
+<td align="left">FREEDOM_CHOICE7</td>
+<td align="left">3.733</td>
+<td align="left">20.660</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE8</td>
-<td align="left">4.4554</td>
-<td align="left">32.667</td>
+<td align="left">FREEDOM_CHOICE8</td>
+<td align="left">4.956</td>
+<td align="left">36.010</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE9</td>
-<td align="left">9.7238</td>
-<td align="left">109.486</td>
+<td align="left">FREEDOM_CHOICE9</td>
+<td align="left">9.740</td>
+<td align="left">103.174</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE10</td>
-<td align="left">7.5990</td>
-<td align="left">89.168</td>
+<td align="left">FREEDOM_CHOICE10</td>
+<td align="left">8.315</td>
+<td align="left">103.006</td>
 </tr>
 </tbody>
 </table>
@@ -891,7 +864,7 @@ knitr::kable(format(as.data.frame(s_beta_boot), digits=3), align=&quot;lllll&quo
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">R</th>
 <th align="left">original</th>
 <th align="left">bootBias</th>
@@ -901,124 +874,124 @@ knitr::kable(format(as.data.frame(s_beta_boot), digits=3), align=&quot;lllll&quo
 </thead>
 <tbody>
 <tr class="odd">
-<td>SEXFemale</td>
+<td align="left">SEXFemale</td>
 <td align="left">1000</td>
 <td align="left">-0.385</td>
-<td align="left">-0.004708</td>
-<td align="left">0.201</td>
-<td align="left">-0.391</td>
+<td align="left">-0.01070</td>
+<td align="left">0.205</td>
+<td align="left">-0.402</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYChhetri</td>
+<td align="left">ETHNICITYChhetri</td>
 <td align="left">1000</td>
 <td align="left">-0.427</td>
-<td align="left">-0.021546</td>
-<td align="left">0.400</td>
-<td align="left">-0.457</td>
+<td align="left">-0.01015</td>
+<td align="left">0.404</td>
+<td align="left">-0.427</td>
 </tr>
 <tr class="odd">
-<td>ETHNICITYDalit-Others</td>
+<td align="left">ETHNICITYDalit-Others</td>
 <td align="left">1000</td>
 <td align="left">-0.585</td>
-<td align="left">0.000599</td>
-<td align="left">0.394</td>
-<td align="left">-0.570</td>
+<td align="left">0.00078</td>
+<td align="left">0.399</td>
+<td align="left">-0.580</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYGurung-Magar</td>
+<td align="left">ETHNICITYGurung-Magar</td>
 <td align="left">1000</td>
 <td align="left">-0.852</td>
-<td align="left">-0.036172</td>
-<td align="left">0.356</td>
-<td align="left">-0.882</td>
+<td align="left">-0.03332</td>
+<td align="left">0.376</td>
+<td align="left">-0.884</td>
 </tr>
 <tr class="odd">
-<td>ETHNICITYNewar</td>
+<td align="left">ETHNICITYNewar</td>
 <td align="left">1000</td>
 <td align="left">-0.617</td>
-<td align="left">-0.019968</td>
-<td align="left">0.411</td>
-<td align="left">-0.628</td>
+<td align="left">-0.03283</td>
+<td align="left">0.432</td>
+<td align="left">-0.649</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYTamang</td>
+<td align="left">ETHNICITYTamang</td>
 <td align="left">1000</td>
 <td align="left">-1.290</td>
-<td align="left">-0.032579</td>
-<td align="left">0.352</td>
+<td align="left">-0.04028</td>
+<td align="left">0.360</td>
 <td align="left">-1.317</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE2</td>
+<td align="left">FREEDOM_CHOICE2</td>
 <td align="left">1000</td>
 <td align="left">1.090</td>
-<td align="left">-0.185943</td>
-<td align="left">1.959</td>
-<td align="left">1.064</td>
+<td align="left">-0.16926</td>
+<td align="left">1.928</td>
+<td align="left">0.987</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE3</td>
+<td align="left">FREEDOM_CHOICE3</td>
 <td align="left">1000</td>
 <td align="left">0.901</td>
-<td align="left">0.002864</td>
-<td align="left">0.560</td>
-<td align="left">0.899</td>
+<td align="left">0.01416</td>
+<td align="left">0.569</td>
+<td align="left">0.932</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE4</td>
+<td align="left">FREEDOM_CHOICE4</td>
 <td align="left">1000</td>
 <td align="left">0.842</td>
-<td align="left">0.023612</td>
-<td align="left">0.524</td>
-<td align="left">0.873</td>
+<td align="left">0.02738</td>
+<td align="left">0.509</td>
+<td align="left">0.901</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE5</td>
+<td align="left">FREEDOM_CHOICE5</td>
 <td align="left">1000</td>
 <td align="left">1.004</td>
-<td align="left">0.032738</td>
-<td align="left">0.437</td>
-<td align="left">1.047</td>
+<td align="left">0.04845</td>
+<td align="left">0.429</td>
+<td align="left">1.059</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE6</td>
+<td align="left">FREEDOM_CHOICE6</td>
 <td align="left">1000</td>
 <td align="left">1.896</td>
-<td align="left">0.055012</td>
-<td align="left">0.426</td>
-<td align="left">1.948</td>
+<td align="left">0.06935</td>
+<td align="left">0.417</td>
+<td align="left">1.971</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE7</td>
+<td align="left">FREEDOM_CHOICE7</td>
 <td align="left">1000</td>
 <td align="left">2.246</td>
-<td align="left">0.069677</td>
-<td align="left">0.434</td>
-<td align="left">2.317</td>
+<td align="left">0.08048</td>
+<td align="left">0.431</td>
+<td align="left">2.326</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE8</td>
+<td align="left">FREEDOM_CHOICE8</td>
 <td align="left">1000</td>
 <td align="left">2.658</td>
-<td align="left">0.086681</td>
-<td align="left">0.520</td>
-<td align="left">2.771</td>
+<td align="left">0.09013</td>
+<td align="left">0.517</td>
+<td align="left">2.755</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE9</td>
+<td align="left">FREEDOM_CHOICE9</td>
 <td align="left">1000</td>
 <td align="left">3.681</td>
-<td align="left">0.123358</td>
-<td align="left">0.571</td>
-<td align="left">3.807</td>
+<td align="left">0.13556</td>
+<td align="left">0.607</td>
+<td align="left">3.798</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE10</td>
+<td align="left">FREEDOM_CHOICE10</td>
 <td align="left">1000</td>
 <td align="left">3.398</td>
-<td align="left">0.080183</td>
-<td align="left">0.655</td>
-<td align="left">3.470</td>
+<td align="left">0.07879</td>
+<td align="left">0.646</td>
+<td align="left">3.457</td>
 </tr>
 </tbody>
 </table>
@@ -1028,86 +1001,86 @@ knitr::kable(format(df.beta_boot, digits=3), align=&quot;ll&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">2.5 %</th>
 <th align="left">97.5 %</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>SEXFemale</td>
-<td align="left">-0.7621</td>
-<td align="left">0.0384</td>
+<td align="left">SEXFemale</td>
+<td align="left">-0.7357</td>
+<td align="left">0.068</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYChhetri</td>
-<td align="left">-1.2179</td>
-<td align="left">0.3338</td>
+<td align="left">ETHNICITYChhetri</td>
+<td align="left">-1.2728</td>
+<td align="left">0.302</td>
 </tr>
 <tr class="odd">
-<td>ETHNICITYDalit-Others</td>
-<td align="left">-1.3857</td>
-<td align="left">0.1650</td>
+<td align="left">ETHNICITYDalit-Others</td>
+<td align="left">-1.4070</td>
+<td align="left">0.152</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYGurung-Magar</td>
-<td align="left">-1.5481</td>
-<td align="left">-0.1514</td>
+<td align="left">ETHNICITYGurung-Magar</td>
+<td align="left">-1.5513</td>
+<td align="left">-0.107</td>
 </tr>
 <tr class="odd">
-<td>ETHNICITYNewar</td>
-<td align="left">-1.3934</td>
-<td align="left">0.2200</td>
+<td align="left">ETHNICITYNewar</td>
+<td align="left">-1.4767</td>
+<td align="left">0.276</td>
 </tr>
 <tr class="even">
-<td>ETHNICITYTamang</td>
-<td align="left">-1.9356</td>
-<td align="left">-0.5123</td>
+<td align="left">ETHNICITYTamang</td>
+<td align="left">-1.9708</td>
+<td align="left">-0.573</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE2</td>
-<td align="left">-2.9527</td>
-<td align="left">4.1315</td>
+<td align="left">FREEDOM_CHOICE2</td>
+<td align="left">-2.3912</td>
+<td align="left">4.370</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE3</td>
-<td align="left">-0.2536</td>
-<td align="left">1.9668</td>
+<td align="left">FREEDOM_CHOICE3</td>
+<td align="left">-0.3460</td>
+<td align="left">1.950</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE4</td>
-<td align="left">-0.3161</td>
-<td align="left">1.7963</td>
+<td align="left">FREEDOM_CHOICE4</td>
+<td align="left">-0.3058</td>
+<td align="left">1.720</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE5</td>
-<td align="left">0.0177</td>
-<td align="left">1.7636</td>
+<td align="left">FREEDOM_CHOICE5</td>
+<td align="left">-0.0269</td>
+<td align="left">1.714</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE6</td>
-<td align="left">0.9198</td>
-<td align="left">2.6667</td>
+<td align="left">FREEDOM_CHOICE6</td>
+<td align="left">0.8858</td>
+<td align="left">2.606</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE7</td>
-<td align="left">1.2316</td>
-<td align="left">2.9808</td>
+<td align="left">FREEDOM_CHOICE7</td>
+<td align="left">1.1412</td>
+<td align="left">2.974</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE8</td>
-<td align="left">1.4718</td>
-<td align="left">3.5358</td>
+<td align="left">FREEDOM_CHOICE8</td>
+<td align="left">1.5870</td>
+<td align="left">3.536</td>
 </tr>
 <tr class="even">
-<td>FREEDOM_CHOICE9</td>
-<td align="left">2.4177</td>
-<td align="left">4.7021</td>
+<td align="left">FREEDOM_CHOICE9</td>
+<td align="left">2.4579</td>
+<td align="left">4.796</td>
 </tr>
 <tr class="odd">
-<td>FREEDOM_CHOICE10</td>
-<td align="left">1.8909</td>
-<td align="left">4.5906</td>
+<td align="left">FREEDOM_CHOICE10</td>
+<td align="left">2.0844</td>
+<td align="left">4.629</td>
 </tr>
 </tbody>
 </table>
@@ -1305,23 +1278,6 @@ plotProbEffect &lt;- function(ef.obj){
 ## ---------------------------------------------------- 
 ## 
 ## H0: Parallel Regression Assumption holds</code></pre>
-<pre><code>##                                X2  df  probability
-## Omnibus               5928.509021 120 0.0000000000
-## SEXFemale               27.112382   8 0.0006760777
-## ETHNICITYChhetri         2.199557   8 0.9742745286
-## ETHNICITYDalit-Others    2.166315   8 0.9754837970
-## ETHNICITYGurung-Magar    2.864757   8 0.9425557787
-## ETHNICITYNewar           5.419212   8 0.7119732074
-## ETHNICITYTamang          1.898275   8 0.9839731742
-## FREEDOM_CHOICE2         19.347883   8 0.0131058967
-## FREEDOM_CHOICE3          9.988154   8 0.2658583091
-## FREEDOM_CHOICE4         10.648955   8 0.2223939392
-## FREEDOM_CHOICE5         10.203099   8 0.2510594492
-## FREEDOM_CHOICE6         27.361064   8 0.0006123065
-## FREEDOM_CHOICE7         25.436778   8 0.0013104830
-## FREEDOM_CHOICE8         13.187097   8 0.1055722918
-## FREEDOM_CHOICE9          4.919087   8 0.7661881672
-## FREEDOM_CHOICE10        12.009860   8 0.1507645135</code></pre>
 <p></br></br></p>
 </div>
 <div id="robustness-check-with-an-alternative-model-vgam" class="section level3">
@@ -1444,7 +1400,7 @@ lmtest::coeftest(fit_lin, vcov = sandwich::vcovHC(fit_lin, type = &quot;HC0&quot
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -1462,7 +1418,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
