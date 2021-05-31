@@ -24,7 +24,6 @@ library("brant")
 library("VGAM")
 library("sandwich")
 library("lmtest")
-library("bucky")
 ```
 
 #### Define Path
@@ -141,40 +140,6 @@ robust_or <- suppressWarnings(
                    UL = exp(coef(fit.m) + 1.96 * robust_sr)))
 
 knitr::kable(format(as.data.frame(robust_or), digits=3), align="lllllll")
-```
-
-### Bootstrapping of Odds ratio with confidence intervals
-```{r}
-# FIT ORDERED LOGISTIC REGRESSION ---
-fit.m <- MASS::polr(SATISFACTION_LEVEL ~ SEX+ETHNICITY+FREEDOM_CHOICE, data=dat, Hess=TRUE, method="logistic")
-
-# BOOTSTRAPPING
-or_boot <- suppressWarnings(car::Boot(fit.m, f = function(fit.m) exp(coef(fit.m)), R=1000))
-s_or_boot <- summary(or_boot)
-
-knitr::kable(format(as.data.frame(s_or_boot), digits=3), align="lllll")
-```
-
-
-```{r}
-df.or_boot <- format(as.data.frame(confint(or_boot, type="bca")), digits=3, scientific=FALSE)
-
-knitr::kable(format(df.or_boot, digits=3), align="ll")
-```
-
-
-### Bootstrapping for Coeffcients with 95% CI (Type= bca)
-```{r}
-beta_boot <- suppressWarnings(car::Boot(fit.m, R=1000))
-s_beta_boot <- summary(beta_boot)
-
-knitr::kable(format(as.data.frame(s_beta_boot), digits=3), align="lllll")
-```
-
-```{r}
-df.beta_boot <- format(as.data.frame(confint(beta_boot, type="bca")), digits=3, scientific=FALSE)
-
-knitr::kable(format(df.beta_boot, digits=3), align="ll")
 ```
 
 </br></br>
